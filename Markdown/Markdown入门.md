@@ -254,4 +254,5 @@ Markdown无法指定图片宽高，如果需要可以使用普通的`<img>`
 | :---         |     :---:      |          ---: |
 | git status   | git status     | git status    |
 | git diff     | git diff       | git diff      |
+
 如果要在表格中使用`-`或`|`使用`\`来转义

@@ -230,7 +230,7 @@ Markdown无法指定图片宽高，如果需要可以使用普通的`<img>`
 使用尖括号括起网址或邮箱他会自动转换为带链接的文字
 
 #### 表格(GitHub) ####
-使用`-``|`来创建表格
+使用 `-` 、 `|` 来创建表格
 ```
 | First Header  | Second Header |
 | ------------- | ------------- |
@@ -238,7 +238,7 @@ Markdown无法指定图片宽高，如果需要可以使用普通的`<img>`
 | Content Cell  | Content Cell  |
 ```
 | First Header  | Second Header |
-| ------------- | ------------- |
+| ------------- | ------------- | 
 | Content Cell  | Content Cell  |
 | Content Cell  | Content Cell  |
 

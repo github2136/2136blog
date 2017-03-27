@@ -15,7 +15,7 @@ Markdown支持HTML标签的使用，Markdown的作用不是取代HTML，Markdown
 - [图片](#图片)
 - [锚点](#锚点)
 - [其他](#其他)
-- [表格(GitHub)](#表格GitHub)
+- [表格(GitHub)](#表格github)
 
 <!-- /MarkdownTOC -->
 ---------- 

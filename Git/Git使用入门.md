@@ -1,10 +1,20 @@
-GIT入门笔记
+Git入门笔记
 =======
-> 笔记是在http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000网站学习git时所留下的
+> 笔记是在http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000 网站学习git时所留下的
 
-安装GIT
-------
-从https://git-for-windows.github.io或https://git-scm.com/下载安装版或绿色版
+# 目录 #
+<!-- MarkdownTOC -->
+
+- 安装Git
+- Git使用
+	- 创建版本库
+	- 添加文件到
+
+<!-- /MarkdownTOC -->
+
+
+## 安装Git ##
+从https://git-for-windows.github.io 或https://git-scm.com/ 下载安装版或绿色版
 安装完成后从Git -> Git Bash 打开界面
 安装完成后设置用户名和邮箱
 ```
@@ -13,11 +23,9 @@ $ git config --global user.email "email@example.com"
 ```
 使用`--global`来做全局设置，也可对单个项目设置
 
-GIT使用
--------
+## Git使用 ##
 
-* 创建版本库
-
+### 创建版本库 ###
 首先创建一个空目录
 ```
 $ mkdir testProject
@@ -31,7 +39,7 @@ $ git init
 Initialized empty Git repository in C:/Users/Administrator/testProject/.git/
 ```
 
-* 添加文件到
+### 添加文件到 ###
 
 第一步，使用`git add`命令将文件添加到仓库
 ```

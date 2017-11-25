@@ -17,4 +17,9 @@ https://developer.android.google.cn/guide/topics/graphics/index.html
 * 帧刷新延迟(Frame refresh delay)：可以设置指定动画刷新帧频率。默认10毫秒一次，但速度最终取决系统繁忙程度及系统可以为底层定时器提供服务的速度
 #### 属性动画如何运行
 首先举一个例子，图1描绘了一个假设的对象，该对象使用其X属性进行动画处理，该属性表示其在屏幕上的水平位置。动画持续40毫秒，行进距离为40像素。每10毫秒，这是默认帧刷新率，对象水平移动10像素。在40毫秒结束，动画停止，并且对象在水平位置40结束。这是具有线性差值动画示例，这意味着对象一恒定速度移动
-![图1](/Android/Android%E5%8A%A8%E7%94%BB/animation-linear.png)
+![图1](/Android/Android%E5%8A%A8%E7%94%BB/animation-linear.png)  
+还可以指定一个非线程插值。图2展示了一个开始时加速的假设对象，在动画结束时减速。对象仍在40毫秒内移动了40个像素，但是非线性的。一开始加速到中点，让后减速到动画结束。
+![图2](/Android/Android%E5%8A%A8%E7%94%BB/animation-nonlinear.png)   
+图3显示了属性动画系统的重要组件如何计算上面所示的动画
+![图3](/Android/Android%E5%8A%A8%E7%94%BB/valueanimator.png)  
+ValueAnimator对象将会跟踪动画的运行，比如动画运行了多久，以及动画属性当前值。 

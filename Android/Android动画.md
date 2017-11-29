@@ -55,3 +55,57 @@ IntEvaluator FloatEvaluator ArgbEvaluator TypeEvaluator
 时间插值器定义了动画中值如何根据时间来计算值。可以指定线性动画使动画匀速移动。属性动画提供以下插值器
 
 AccelerateDecelerateInterpolator AccelerateInterpolator AnticipateInterpolator AnticipateOvershootInterpolator BounceInterpolator CycleInterpolator DecelerateInterpolator LinearInterpolator OvershootInterpolator TimeInterpolator
+#### ValueAnimator动画
+ValueAnimator类通过指定一组int、float或颜色的值来实现动画，可以让你在动画持续时间内对类的值进行动画。通过调用其工厂方法之一：ofInt(), ofFloat(), or ofObject()可以获得一个ValueAnimator
+```
+ValueAnimator animation = ValueAnimator.ofFloat(0f, 100f);
+animation.setDuration(1000);
+animation.start();
+```
+这段代码表示当调用start()时ValueAnimator开始计算值从0到100，持续时间1000毫秒
+
+还可以通过执行以下操作来自定义
+```
+ValueAnimator animation = ValueAnimator.ofObject(new MyTypeEvaluator(), startPropertyValue, endPropertyValue);
+animation.setDuration(1000);
+animation.start();
+```
+这段代码表示当调用start()时ValueAnimator开始计算值从startPropertyValue到endPropertyValue，使用MyTypeEvaluator提供的逻辑计算，持续时间100毫秒
+
+可是给ValueAnimator添加AnimatorUpdateListener来使用动画的值
+```
+animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+    @Override
+    public void onAnimationUpdate(ValueAnimator updatedAnimation) {
+        // You can use the animated value in a property that uses the
+        // same type as the animation. In this case, you can use the
+        // float value in the translationX property.
+        float animatedValue = (float)updatedAnimation.getAnimatedValue();
+        textView.setTranslationX(animatedValue);
+    }
+});
+```
+在onAnimationUpdate()方法中可以监听并用于视图的属性，关于更多监听器详见[Animation Listeners](https://developer.android.google.cn/guide/topics/graphics/prop-animation.html#listeners)
+#### ObjectAnimator动画
+ObjectAnimator是ValueAnimator的一个子类，并结合了ValueAnimator的计时引擎和值计算，并有能力将对象的属性名执行动画。这使任何对象调价动画容易的多,因不需要实现ValueAnimator的AnimatorUpdateListener，因为可以自动更新属性
+
+实例化ObjectAnimator类似于ValueAnimator，但也可以指定对象的属性(作为字符串)以及在其中的值
+```
+ObjectAnimator animation = ObjectAnimator.ofFloat(textView, "translationX", 100f);
+animation.setDuration(1000);
+animation.start();
+```
+要让ObjectAnimator正确的更新属性，必须做以下操作
+
+* 对象的动画属性必须有set<属性名>()。因为ObjectAnimator在动画期间自动更新属性，因此必须能使用这个setter方法访问属性。例如，如果属性名是foo，则需要使用setFoo()方法。如果这个setter方法不存在，则有三个方法：
+
+> * 添加settter方法
+> * 使用一个包装类使用有效的setter方法接收该值，并将其转发到原始对象
+> * 使用ValueAnimator
+* 如果给ObjectAnimator仅指定一个值，则假定为动画的结束值。因此，所做动画的属性必须有一个getter函数，用于获取动画起始值。getter函数必须以get<PropertyName>()的形式出现，例如属性名为foo，则需要一个getFoo()方法
+* getter(如果需要)和setter方法必须和指定的ObjectAnimator开始值和结束值类型相同。例如有targetObject.setPropName(float)和targetObject.getPropName(float)
+```
+ObjectAnimator.ofFloat(targetObject, "propName", 1f)
+```
+* 根据动画或属性对象，可能需要在view上调用invalidate()方法来强制view更新。可以在onAnimationUpdate()回调中操作。例如Drawable对象的颜色属性进行动画处理时，只会在对象重新绘制到屏幕时更新。view上所有属性setter如setAlpha()和setTranslationX()都可以正确的绘制，因此，调用这些方法的时不用调用invalidate()
+#### 使用AnimatorSet编排多个动画

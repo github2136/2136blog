@@ -109,3 +109,45 @@ ObjectAnimator.ofFloat(targetObject, "propName", 1f)
 ```
 * 根据动画或属性对象，可能需要在view上调用invalidate()方法来强制view更新。可以在onAnimationUpdate()回调中操作。例如Drawable对象的颜色属性进行动画处理时，只会在对象重新绘制到屏幕时更新。view上所有属性setter如setAlpha()和setTranslationX()都可以正确的绘制，因此，调用这些方法的时不用调用invalidate()
 #### 使用AnimatorSet编排多个动画
+可以将多个动画合并到一个AnimatorSet，以便指定同时、按顺序或指定延迟后执行。也可以将AnimatorSet对象嵌套在一起
+1. 播放 bounceAnim.
+1. 同时播放 squashAnim1, squashAnim2, stretchAnim1, stretchAnim2 
+1. 播放 bounceBackAnim.
+1. 播放 fadeAnim.
+```
+AnimatorSet bouncer = new AnimatorSet();
+bouncer.play(bounceAnim).before(squashAnim1);
+bouncer.play(squashAnim1).with(squashAnim2);
+bouncer.play(squashAnim1).with(stretchAnim1);
+bouncer.play(squashAnim1).with(stretchAnim2);
+bouncer.play(bounceBackAnim).after(stretchAnim2);
+ValueAnimator fadeAnim = ObjectAnimator.ofFloat(newBall, "alpha", 1f, 0f);
+fadeAnim.setDuration(250);
+AnimatorSet animatorSet = new AnimatorSet();
+animatorSet.play(bouncer).before(fadeAnim);
+animatorSet.start();
+```
+#### 动画监听
+Animator.AnimatorListener  
+onAnimationStart() - 动画开始时调用  
+onAnimationEnd() - 动画结束时调用  
+onAnimationRepeat() - 动画重复时调用  
+onAnimationCancel() - 动画取消时调用。取消时也会调用onAnimationEnd()，不管如何结束都会调用onAnimationEnd()
+
+ValueAnimator.AnimatorUpdateListener  
+onAnimationUpdate() - 每一帧更新时调用。使用此监听器监听ValueAnimator在动画过程中值得变化。要使用该值可以调用传入的ValueAnimator对象的getAnimatedValue()方法。如果要使用ValueAnimator，则需要实现该监听器。根据动画的属性或对象，可能需要调用view的invalidate()方法以强制重新绘制自己。例如，Drawable对象的颜色属性只会在重新绘制在屏幕上是刷新。view上的所有属性均能正确使用，因此调用view不需要调用invalidate()方法。
+
+如果不想实现Animator.AnimatorListener接口的所有方法，可以扩展AnimatorListenerAdapter类。AnimatorListenerAdapter类提供了可以选择覆盖方法的空实现
+
+#### ViewGroups的动画布局
+属性动画提供了对ViewGroups对象进行动画变化的功能，并提供了一种简单的方法的来为view对象本身设置动画效果。
+
+可以使用LayoutTransition类在ViewGroups内动画布局更改。ViewGroups中的view可以在ViewGroups中添加或删除，或者使用VISIBLE，INVISIBLE或GONE时调用setVisibility()，可以运行动画。在添加或删除view时，ViewGroups中剩余view可以动画到新的位置。可以通过调用setAnimator()并使用下列LayoutTransition常量传入Animator对象来定义动画：
+* APPEARING - 表示在容器中出现的项(item)动画
+* CHANGE_APPEARING - 表示在容器中出现新的项(item)而改变项(item)运行的动画
+* DISAPPEARING - 表示从容器消失的项(item)运行的动画
+* CHANGE_DISAPPEARING - 表示由于某项(item)从容器显示而正在改变的项(item)运行的动画
+可以为这四种类型时间定义自己的自定义动画，或使用默认动画
+
+api演示中的LayoutAnimations示例展示了如何为布局转换自定义动画，使用android:animateLayoutchanges="true"可以添加默认动画
+#### 使用TypeEvaluator

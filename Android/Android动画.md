@@ -151,3 +151,88 @@ onAnimationUpdate() - 每一帧更新时调用。使用此监听器监听ValueAn
 
 api演示中的LayoutAnimations示例展示了如何为布局转换自定义动画，使用android:animateLayoutchanges="true"可以添加默认动画
 #### 使用TypeEvaluator
+如果动画使未知类型，可以通过实现TypeEvaluator接口来创建自己的Evaluator。Android系统已知的类型有IntEvaluator、FloatEvaluator和ArgbEvaluator分别作用与int、float和color。
+在TypeEvaluator接口中只有一个方法需要执行evaluate()方法。这允许在动画执行时返回适当的值
+```
+public class FloatEvaluator implements TypeEvaluator {
+    public Object evaluate(float fraction, Object startValue, Object endValue) {
+        float startFloat = ((Number) startValue).floatValue();
+        return startFloat + fraction * (((Number) endValue).floatValue() - startFloat);
+    }
+}
+```
+### 使用Interpolators
+插值器可以定义动画中特定值如何随时间如何计算。例如可以指定动画在整个时间中线性变换，那意味着整个动画将匀速运动，或者指定为非线性，使用加速或减速动画。
+
+动画系统中插值器将会接收来自Animators的值。插值器将这个分数修改为与其目标提供的动画类型一致。android.view.animation包中有一组常用插值器，如果不符合要求可以自己实现TimeInterpolator接口
+
+### 关键帧
+Keyframe对象由一个时间/值组成，可以指定动画的特定时间的特定状态。每个关键帧可以有自己的插值器，以控制上一个关键帧与此关键帧之间的动画。
+
+实例化Keyframe对象，必须使用ofInt()，ofFloat()或ofObject()之一的工厂方法来获取Keyframe对象。然后调用PropertyValuesHolder的ofKeyframe方法
+```
+Keyframe kf0 = Keyframe.ofFloat(0f, 0f);
+Keyframe kf1 = Keyframe.ofFloat(.5f, 360f);
+Keyframe kf2 = Keyframe.ofFloat(1f, 0f);
+PropertyValuesHolder pvhRotation = PropertyValuesHolder.ofKeyframe("rotation", kf0, kf1, kf2);
+ObjectAnimator rotationAnim = ObjectAnimator.ofPropertyValuesHolder(target, pvhRotation)
+rotationAnim.setDuration(5000ms);
+```
+
+## 视图动画（View Animation）
+使用View Animation在view上执行补间动画。补间动画使用诸如动画起点，中点，大小，旋转和其他常见动画
+
+补间动画可以对View执行一系列简单的转换（位置，大小，旋转，透明度）
+
+一系列动画指令由XML或Android代码实现。建议使用XML，因为它比硬编码更具有可读性，可重用性，可交换性。
+
+动画指令定义想要执行的变化，何时发送，以及持续多久。动画可以是顺序或同时的
+
+动画XML放在项目的res/anim目录下。可包含的有\<alpha\>, \<scale\>, \<translate\>, \<rotate\>，interpolator 元素和\<set\>。默认情况所有指令都是同时执行。如果要按顺序执行，必须指定startOffset
+```
+<set android:shareInterpolator="false">
+    <scale
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:fromXScale="1.0"
+        android:toXScale="1.4"
+        android:fromYScale="1.0"
+        android:toYScale="0.6"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:fillAfter="false"
+        android:duration="700" />
+    <set android:interpolator="@android:anim/decelerate_interpolator">
+        <scale
+           android:fromXScale="1.4"
+           android:toXScale="0.0"
+           android:fromYScale="0.6"
+           android:toYScale="0.0"
+           android:pivotX="50%"
+           android:pivotY="50%"
+           android:startOffset="700"
+           android:duration="400"
+           android:fillBefore="false" />
+        <rotate
+           android:fromDegrees="0"
+           android:toDegrees="-45"
+           android:toYScale="0.0"
+           android:pivotX="50%"
+           android:pivotY="50%"
+           android:startOffset="700"
+           android:duration="400" />
+    </set>
+</set>
+```
+屏幕坐标左上是(0,0)，一些值，如pivotX，可以相对于对象或相对父对象。使用`50%`
+
+可以通过分配Interpolator来确定如果转换。Android包含几种速度曲线Interpolator子类
+
+将这个XML保存在res/anim/目录下使用代码引用
+```
+ImageView spaceshipImage = (ImageView) findViewById(R.id.spaceshipImage);
+Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(this, R.anim.hyperspace_jump);
+spaceshipImage.startAnimation(hyperspaceJumpAnimation);
+```
+作为startAnimation()替代方法，可以使用Animation.setStartTime()定义动画开始时间，然后使用View.setAnimation()将该动画分配给view，关于更多信息参考[Animation Resources](https://developer.android.google.cn/guide/topics/resources/animation-resource.html)
+
+**注意**无论如何移动或调整大小，保存动画的view边界不会再送调整适应它。即使动画超出其view范围也不会被裁剪。但如果超过父view边界，将会裁剪

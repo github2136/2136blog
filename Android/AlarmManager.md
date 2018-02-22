@@ -1,7 +1,7 @@
 # AlarmManager
 AlarmManager是一个全局的警报管理，可以在指定时间启动Service、Activity、BroadcastReceiver
 **注意**从API19开始报警将是不准确的
-```
+```java
 //初始化
 AlarmManager mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 Intent intent = new Intent(this, UDPService.class);

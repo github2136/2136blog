@@ -57,7 +57,7 @@ IntEvaluator FloatEvaluator ArgbEvaluator TypeEvaluator
 AccelerateDecelerateInterpolator AccelerateInterpolator AnticipateInterpolator AnticipateOvershootInterpolator BounceInterpolator CycleInterpolator DecelerateInterpolator LinearInterpolator OvershootInterpolator TimeInterpolator
 #### ValueAnimator动画
 ValueAnimator类通过指定一组int、float或颜色的值来实现动画，可以让你在动画持续时间内对类的值进行动画。通过调用其工厂方法之一：ofInt(), ofFloat(), or ofObject()可以获得一个ValueAnimator
-```
+```java
 ValueAnimator animation = ValueAnimator.ofFloat(0f, 100f);
 animation.setDuration(1000);
 animation.start();
@@ -65,7 +65,7 @@ animation.start();
 这段代码表示当调用start()时ValueAnimator开始计算值从0到100，持续时间1000毫秒
 
 还可以通过执行以下操作来自定义
-```
+```java
 ValueAnimator animation = ValueAnimator.ofObject(new MyTypeEvaluator(), startPropertyValue, endPropertyValue);
 animation.setDuration(1000);
 animation.start();
@@ -73,7 +73,7 @@ animation.start();
 这段代码表示当调用start()时ValueAnimator开始计算值从startPropertyValue到endPropertyValue，使用MyTypeEvaluator提供的逻辑计算，持续时间100毫秒
 
 可是给ValueAnimator添加AnimatorUpdateListener来使用动画的值
-```
+```java
 animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
     @Override
     public void onAnimationUpdate(ValueAnimator updatedAnimation) {
@@ -90,7 +90,7 @@ animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 ObjectAnimator是ValueAnimator的一个子类，并结合了ValueAnimator的计时引擎和值计算，并有能力将对象的属性名执行动画。这使任何对象调价动画容易的多,因不需要实现ValueAnimator的AnimatorUpdateListener，因为可以自动更新属性
 
 实例化ObjectAnimator类似于ValueAnimator，但也可以指定对象的属性(作为字符串)以及在其中的值
-```
+```java
 ObjectAnimator animation = ObjectAnimator.ofFloat(textView, "translationX", 100f);
 animation.setDuration(1000);
 animation.start();
@@ -104,7 +104,7 @@ animation.start();
 > * 使用ValueAnimator
 * 如果给ObjectAnimator仅指定一个值，则假定为动画的结束值。因此，所做动画的属性必须有一个getter函数，用于获取动画起始值。getter函数必须以get<PropertyName>()的形式出现，例如属性名为foo，则需要一个getFoo()方法
 * getter(如果需要)和setter方法必须和指定的ObjectAnimator开始值和结束值类型相同。例如有targetObject.setPropName(float)和targetObject.getPropName(float)
-```
+```java
 ObjectAnimator.ofFloat(targetObject, "propName", 1f)
 ```
 * 根据动画或属性对象，可能需要在view上调用invalidate()方法来强制view更新。可以在onAnimationUpdate()回调中操作。例如Drawable对象的颜色属性进行动画处理时，只会在对象重新绘制到屏幕时更新。view上所有属性setter如setAlpha()和setTranslationX()都可以正确的绘制，因此，调用这些方法的时不用调用invalidate()
@@ -114,7 +114,7 @@ ObjectAnimator.ofFloat(targetObject, "propName", 1f)
 1. 同时播放 squashAnim1, squashAnim2, stretchAnim1, stretchAnim2 
 1. 播放 bounceBackAnim.
 1. 播放 fadeAnim.
-```
+```java
 AnimatorSet bouncer = new AnimatorSet();
 bouncer.play(bounceAnim).before(squashAnim1);
 bouncer.play(squashAnim1).with(squashAnim2);
@@ -153,7 +153,7 @@ api演示中的LayoutAnimations示例展示了如何为布局转换自定义动�
 #### 使用TypeEvaluator
 如果动画使未知类型，可以通过实现TypeEvaluator接口来创建自己的Evaluator。Android系统已知的类型有IntEvaluator、FloatEvaluator和ArgbEvaluator分别作用与int、float和color。
 在TypeEvaluator接口中只有一个方法需要执行evaluate()方法。这允许在动画执行时返回适当的值
-```
+```java
 public class FloatEvaluator implements TypeEvaluator {
     public Object evaluate(float fraction, Object startValue, Object endValue) {
         float startFloat = ((Number) startValue).floatValue();
@@ -170,7 +170,7 @@ public class FloatEvaluator implements TypeEvaluator {
 Keyframe对象由一个时间/值组成，可以指定动画的特定时间的特定状态。每个关键帧可以有自己的插值器，以控制上一个关键帧与此关键帧之间的动画。
 
 实例化Keyframe对象，必须使用ofInt()，ofFloat()或ofObject()之一的工厂方法来获取Keyframe对象。然后调用PropertyValuesHolder的ofKeyframe方法
-```
+```java
 Keyframe kf0 = Keyframe.ofFloat(0f, 0f);
 Keyframe kf1 = Keyframe.ofFloat(.5f, 360f);
 Keyframe kf2 = Keyframe.ofFloat(1f, 0f);
@@ -189,7 +189,7 @@ rotationAnim.setDuration(5000ms);
 动画指令定义想要执行的变化，何时发送，以及持续多久。动画可以是顺序或同时的
 
 动画XML放在项目的res/anim目录下。可包含的有\<alpha\>, \<scale\>, \<translate\>, \<rotate\>，interpolator 元素和\<set\>。默认情况所有指令都是同时执行。如果要按顺序执行，必须指定startOffset
-```
+```xml
 <set android:shareInterpolator="false">
     <scale
         android:interpolator="@android:anim/accelerate_decelerate_interpolator"
@@ -228,7 +228,7 @@ rotationAnim.setDuration(5000ms);
 可以通过分配Interpolator来确定如果转换。Android包含几种速度曲线Interpolator子类
 
 将这个XML保存在res/anim/目录下使用代码引用
-```
+```java
 ImageView spaceshipImage = (ImageView) findViewById(R.id.spaceshipImage);
 Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(this, R.anim.hyperspace_jump);
 spaceshipImage.startAnimation(hyperspaceJumpAnimation);

@@ -80,5 +80,5 @@ DateUtils.formatDateRange(this,
 > minResolution 表示最短时间如使用DateUtils.SECOND_IN_MILLIS经过3秒后显示为‘0分钟前’
 transitionResolution 表示以停止使用相对时间大于此时间将由‘xx天/小时前’变为‘12月12日’
 * getRelativeTimeSpanString(long startTime) 返回相对的时间，如果在当天显示时间，如果在当年显示月日，否则显示年月日
-* getRelativeTimeSpanString(Context c, long millis) 返回一个具体时间，如果在当天显示时间否显示月日
+* getRelativeTimeSpanString(Context c, long millis) 返回一个具体时间，如果在当天显示时间，如果在当年显示月日，否则显示年月日
 * isToday(long when) 传入时间是否在当天

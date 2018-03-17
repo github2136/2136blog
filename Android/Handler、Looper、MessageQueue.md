@@ -8,3 +8,17 @@
 每个线程只能有一个Looper，每个Looper只有一个MessageQueue，每个MessageQueue可对应多个Handler，只能向UI线程的Handler发送修改view的信息
 
 http://blog.csdn.net/jiangwei0910410003/article/details/17021809
+
+* 自定义Looper线程
+1. 首先新建一个Thread，在run方法中调用prepare()准备，调用loop()开始循环读取
+```java 
+@Override
+public void run() {
+    Looper.prepare();
+    looper = Looper.myLooper();
+    Looper.loop();
+}
+```
+2. 启动线程调用start()方法
+3. 从线程对象中获取Looper对象创建Handler
+3. 通过创建的Handler向新建的线程发送消息

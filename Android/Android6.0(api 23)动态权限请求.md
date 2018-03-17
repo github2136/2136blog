@@ -4,6 +4,7 @@ https://developer.android.google.cn/guide/topics/permissions/index.html
 **当授权的权限属于同一权限组时，会在一个请求中提示是否允许**
 
 以下危险权限必须动态授权
+
 |权限组|权限|
 |-|-|
 |CALENDAR   |READ_CALENDAR|
@@ -34,6 +35,7 @@ https://developer.android.google.cn/guide/topics/permissions/index.html
 |           |RECEIVE_MMS|
 |STORAGE    |READ_EXTERNAL_STORAGE|
 |           |WRITE_EXTERNAL_STORAGE|
+
 权限请求
 ```java
 //请求权限
@@ -53,7 +55,7 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //权限响应
 @Override
 public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    //requestCode请求b编码
+    //requestCode请求编码
     //permissions请求的权限
     //grantResults授予结果
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);

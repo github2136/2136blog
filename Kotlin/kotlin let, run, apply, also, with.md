@@ -54,7 +54,23 @@ with(ArrayList<String>()) {
 }.let { println(it) }
 ```
 ## takeIf
+在函数里操作对象，如果最后返回`true`则返回对象否则返回`null`，`it`表示当前对象
+```kotlin
+val date1 = Date().takeIf {
+    // 是否在2018年元旦后
+    it.before(Date(2018 - 1900, 0, 1))
+}
+println("date = $date1")
+```
 
 ## takeUnless
+与`takeIf`相反
+```
+val date = Date().takeUnless {
+    // 是否在2018年元旦后
+    it.after(Date(2018 - 1900, 0, 1))
+}
 
+println("date = $date")
+```
 https://www.jianshu.com/p/5c4a954d2b2c

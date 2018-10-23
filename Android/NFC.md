@@ -490,9 +490,9 @@ void writeMifareClassic(Tag tag, byte[] bytes) {
 
 | Access Bits                                  | Valid Commands                                                     | Block | Description         |
 |----------------------------------------------|--------------------------------------------------------------------|-------|---------------------|
-| C1<sub>0</sub> C2<sub>0</sub> C3<sub>0</sub> | 读、写、增、减、赋值、还原(read, write, increment, decrement,transfer, restore) | 0     | 块(data block)       |
-| C1<sub>1</sub> C2<sub>1</sub> C3<sub>1</sub> | 读、写、增、减、赋值、还原(read, write, increment, decrement,transfer, restore) | 1     | 块(data block)       |
-| C1<sub>2</sub> C2<sub>2</sub> C3<sub>2</sub> | 读、写、增、减、赋值、还原(read, write, increment, decrement,transfer, restore) | 2     | 块(data block)       |
+| C1<sub>0</sub> C2<sub>0</sub> C3<sub>0</sub> | 读、写、增、减、赋值、还原<br>(read, write, increment, decrement,transfer, restore) | 0     | 块(data block)       |
+| C1<sub>1</sub> C2<sub>1</sub> C3<sub>1</sub> | 读、写、增、减、赋值、还原<br>(read, write, increment, decrement,transfer, restore) | 1     | 块(data block)       |
+| C1<sub>2</sub> C2<sub>2</sub> C3<sub>2</sub> | 读、写、增、减、赋值、还原<br>(read, write, increment, decrement,transfer, restore) | 2     | 块(data block)       |
 | C1<sub>3</sub> C2<sub>3</sub> C3<sub>3</sub> | 读、写(read, write)                                                   | 3     | 权限块(sector trailer) |
 
 * 权限控制说明
@@ -789,6 +789,6 @@ void writeMifareClassic(Tag tag, byte[] bytes) {
 | 权限     | C1<sub>3</sub> | C2<sub>3</sub> | C3<sub>3</sub> |
 | **值4** | **0**          | **1**          | **1**          |
 
-Byte6:0000 1000&rarr;08
-Byte7:0111 0111&rarr;77
-Byte8:1000 1111&rarr;8F
+Byte6:0000 1000&rarr;08  
+Byte7:0111 0111&rarr;77  
+Byte8:1000 1111&rarr;8F  

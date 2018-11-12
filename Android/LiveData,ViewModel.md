@@ -1,5 +1,5 @@
 ## LiveData
-https://developer.android.google.cn/topic/libraries/architecture/adding-components
+集成https://developer.android.google.cn/topic/libraries/architecture/adding-components
 在support26.1.0以上版本会自动集成`LiveData`和`ViewModel`不需另外集成
 
 `LiveData`与`ViewModel`都与生命周期有关，`AppCompatActivity`与`v4`包的`Fragment`都实现了`LifecycleOwner`接口
@@ -22,6 +22,8 @@ class MyViewModel : ViewModel() {
     }
 }
 ```
+**如果在UI线程设置数据使用`MyViewModel.setValue`非UI线程使用`MyViewModel.postValue`**
+
 然后在Activity调用
 ```kotlin
 class MyActivity : AppCompatActivity() {

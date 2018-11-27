@@ -9,3 +9,10 @@ AndroidX是用来替代旧版support库AndroidX和support一样和Android操作�
 如果需要使用AndroidX需要设置compile SDK 为Android9.0（api28）或更高，并在gradle.properties中将以下两个标志设置为true
 * android.useAndroidX：设置为true时Android插件使用相应的AndroidX库而不是support库，默认为false
 * android.enableJetifier：设置为true时，Android插件会自动迁移现有第三方库通过重写二进制文件来使用AndroidX，默认为false
+
+**如果不添加有可能会出现**
+```
+Manifest merger failed : Attribute application@appComponentFactory value=(android.support.v4.app.CoreComponentFactory) from [com.android.support:support-compat:28.0.0] AndroidManifest.xml:22:18-91
+	is also present at [androidx.core:core:1.0.1] AndroidManifest.xml:22:18-86 value=(androidx.core.app.CoreComponentFactory).
+	Suggestion: add 'tools:replace="android:appComponentFactory"' to <application> element at AndroidManifest.xml:5:5-19:19 to override.
+```

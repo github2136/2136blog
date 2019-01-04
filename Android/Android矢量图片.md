@@ -50,5 +50,6 @@ defaultConfig {
 与对应的光栅图像相比，矢量图首次加载时可能消耗更多的 CPU 资源。之后，二者的内存使用率和性能则不相上下。我们建议您将矢量图像限制为最大 200 x 200 dp；否则，绘制它可能需要耗费很长的时间。
 
 尽管矢量图确实支持一种或多种颜色，但在很多情况下，最好将图标设置为黑色 (android:fillColor="#FF000000")。通过此方法，您可以为布局中放置的矢量图添加 tint 属性，图标颜色将随之变为 tint 颜色。如果图标颜色不是黑色，图标颜色可能反而与 tint 颜色较为搭配。
+**如果需要在`srcCompat`中使用`selector`可以在`Application`的`onCreate`中添加`AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)`** 
 #### PSD 
 Vector Asset Studio 并非支持所有 PSD 文件功能。以下列表归纳了支持和不支持的 PSD 特性以及部分转换详情。

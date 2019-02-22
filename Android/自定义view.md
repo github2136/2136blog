@@ -25,4 +25,4 @@
 7. 重新`onDraw()`绘制自定义内容
 * `drawRect`绘制矩形使用`Rect`或`RectF`来确定矩形四边与屏幕左上角位置
     > 如果`Paint`的Style设置为`FILL`则完全按坐标显示一个完整的矩形，如果设置为`STROKE`或`FILL_AND_STROKE`并且设置`setStrokeWidth`为较大的值则该矩形实际看起来的大小会不一样
-    ![图1](/Android/自定义view/1.png)  
+    ![图1](/Android/%E8%87%AA%E5%AE%9A%E4%B9%89view/1.png)  

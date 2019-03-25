@@ -9,6 +9,7 @@ https://d.android.com/r/tools/flavorDimensions-missing-error-message.html
 * 在`app`的build.gradle中定义`flavorDimensions`并设置值
 * 然后在`productFlavors`中对每个`flavor`指定`dimension`的值，该值必须是在`flavorDimensions`中定义过的值
 
+**使用不同源码可根据`Build Variants`在`src`目录下新建对应文件夹**
 ```Groovy 
 android {
     ...

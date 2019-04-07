@@ -24,10 +24,48 @@
 7. `Paint`基本方法
     * `setStyle`设置绘制模式`FILL`默认填充`STROKE`描边`FILL_AND_STROKE`描边加填充
     * `setColor`设置颜色
-    * `setStrokeWidth`设置线条宽度
+    * `setStrokeWidth`设置线条宽度默认0
     * `setTextSize`设置文字大小
     * `setAntiAlias`设置开启抗锯齿
     * `setStrokeCap`设置点或线为圆角（注意关闭硬件加速，不然可能没有效果）
+    * `setStrokeJoin`拐角样式`MITER`尖角、`BEVEL`平角和`ROUND`圆角。默认为`MITER`
+    * `setStrokeMiter`拐角延长线最大值
+    * `setDither`图像抖动
+    * `setFilterBitmap`双线性过滤
+    * `setPathEffect`绘制路线效果
+    * `setShadowLayer`文字阴影绘制
+    * `setPathEffect`线路效果
+    * `setMaskFilter`模糊效果`BlurMaskFilter`浮雕效果`EmbossMaskFilter`
+    * `getFillPath`获得图形的绘制路径
+    * `getTextPath`获得文字的绘制路径
+    * `setTypeface`设置文字字体
+    * `setFakeBoldText`设置伪粗体
+    * `setStrikeThruText`删除线
+    * `setUnderlineText`下划线
+    * `setTextSkewX`设置文字倾斜角度
+    * `setTextScaleX`文字横向缩放
+    * `setLetterSpacing`文字间距
+    * `setFontFeatureSettings`以CSS的`font-feature-settings`方式设置文字
+    * `setTextAlign`文字对其方式
+    * `setTextLocale`设置文字所属区域，`Locale.CHINA/Locale.JAPAN`等
+    * `setHinting`字体微调（现在作用不大）
+    * `setSubpixelText`次级像素抗锯齿（现在作用不大）
+    * `setLinearText`
+    * `getFontSpacing`获取行高
+    * `getFontMetrics`获取文字指标`ascent/descent/top/bottom/leading`
+    * `getTextBounds`获取文字尺寸
+    * `measureText`获取文字宽度
+    * `getTextWidths`获取每个字符宽度
+    * `breakText`根据输入的宽度限制返回可显示文字数量
+    * `getRunAdvance`获取光标位置
+    * `hasGlyph`检查指定字符串中是否是一个单独的字形
+1. PathEffect路径效果 
+    * `CornerPathEffect`圆角效果
+    * `DiscretePathEffect`随机偏离
+    * `DashPathEffect`虚线效果
+    * `PathDashPathEffect`指定路径虚线绘制
+    * `SumPathEffect`叠加效果，将两个效果叠加绘制
+    * `ComposePathEffect`组合效果，将两个效果组合绘制
 1. 重新`onDraw()`绘制自定义内容
     * `drawColor` `drawRGB` `drawARGB`给画布设置颜色`RGB`值为0..255
     * `drawRect`绘制矩形使用`left` `right` `top` `bottom`设置矩形四边与屏幕左上角位置或使用`Rect`和`RectF`
@@ -45,6 +83,7 @@
         * `useCenter:false`+`Style.STROKE`：弧线
     * `drawBitmap`绘制图片
     * `drawText`绘制文字坐标为文字的左下角
+    * `drawTextOnPath`按指定路径绘制文字`hOffset`表示文字水平起始位置，只能为正值，`vOffset`表示文字垂直位置，正值为路线下方，负值为路线上方
     * `drawPath`自定义图形，分为两类方法
         1. 直接绘制，绘制方法分为两种
             * `addXxx()`添加子图形，例如`addCircle`画圆，如果参数里有名为`Direction`则表示绘制方向`CW`顺时针`CCW`逆时针
@@ -54,3 +93,18 @@
             * `close()`封闭当前图形
         1. 辅助的设置或计算
             * `setFillType`的使用 https://hencoder.com/ui-1-1/
+
+1. Shader着色器
+    * `LinearGradient`线性渐变
+    * `RadialGradient`辐射渐变
+    * `SweepGradient`扫描渐变
+    * `BitmapShader`图片绘制
+    * `ComposeShader`混合着色，将两个Shader混合使用
+
+1. ColorFilter
+    * `LightingColorFilter`通过模拟灯光效果的颜色滤镜
+    * `ColorMatrixColorFilter`通过4*5的颜色矩阵改变颜色
+    * `PorterDuffColorFilter`通过单色和特定Porter-Duff模式对像素过滤
+1. Xfermode
+    * `PorterDuffXfermode`通过特定的Porter-Duff来设置两个图形的叠加绘制，绘制是注意使用离屏缓冲`Canvas.saveLayer();canvas.restoreToCount(saved);`
+1. StaticLayout文字绘制可根据设置的宽设置自动给文字换行

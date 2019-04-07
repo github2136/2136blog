@@ -178,6 +178,39 @@ PropertyValuesHolder pvhRotation = PropertyValuesHolder.ofKeyframe("rotation", k
 ObjectAnimator rotationAnim = ObjectAnimator.ofPropertyValuesHolder(target, pvhRotation)
 rotationAnim.setDuration(5000ms);
 ```
+如果代码中需要使用多个属性动画可以使用以下代码
+```java
+ViewPropertyAnimatorCompat viewPropertyAnimatorCompat = ViewCompat.animate(iv);
+viewPropertyAnimatorCompat.x(200).y(200).setDuration(2000).start();
+```
+类分为两种方法一种是普通的方法例如`x()`，另一种是以`by()`结尾，默认方法表示从当前值到指定值，另一种表示以当前值增加或减少指定值
+```java
+ViewPropertyAnimator viewPropertyAnimator = iv.animate();
+viewPropertyAnimator.x(100).setDuration(2000).start();//表示从原点向右移动到X轴坐标为100px的位置
+viewPropertyAnimator.xBy(100).setDuration(2000).start();//表示从当前位置向右移动100px
+```
+`ViewPropertyAnimator`基本方法
+| Method | Discription |
+| :----- | :---------- |
+| alpha(float value) | 设置透明度，value表示变化到多少，1不透明，0全透明。 | 
+| scaleY(float value) | 设置Y轴方向的缩放大小，value表示缩放到多少。1表示正常规格。小于1代表缩小，大于1代表放大。 | 
+| scaleX(float value) | 设置X轴方向的缩放大小，value表示缩放到多少。1表示正常规格。小于1代表缩小，大于1代表放大。 | 
+| translationY(float value) | 设置Y轴方向的移动值，作为增量来控制View对象相对于它父容器的左上角坐标偏移的位置，即移动到哪里。 | 
+| translationX(float value) | 设置X轴方向的移动值，作为增量来控制View对象相对于它父容器的左上角坐标偏移的位置。 | 
+| rotation(float value) | 控制View对象围绕支点进行旋转， rotation针对2D旋转 | 
+| rotationX (float value) | 控制View对象围绕X支点进行旋转， rotationX针对3D旋转 | 
+| rotationY(float value) | 控制View对象围绕Y支点进行旋转， rotationY针对3D旋转 | 
+| x(float value) | 控制View对象相对于它父容器的左上角坐标在X轴方向的最终位置。 | 
+| y(float value) | 控制View对象相对于它父容器的左上角坐标在Y轴方向的最终位置 | 
+| void cancel() | 取消当前正在执行的动画 | 
+| setListener(Animator.AnimatorListener listener) | 设置监听器，监听动画的开始，结束，取消，重复播放 | 
+| setUpdateListener(ValueAnimator.AnimatorUpdateListener listener) | 设置监听器，监听动画的每一帧的播放 | 
+| setInterpolator(TimeInterpolator interpolator) | 设置插值器 | 
+| setStartDelay(long startDelay) | 设置动画延长开始的时间 | 
+| setDuration(long duration) | 设置动画执行的时间 | 
+| withLayer() | 设置是否开启硬件加速 | 
+| withStartAction(Runnable runnable) | 设置用于动画监听开始（Animator.AnimatorListener）时运行的Runnable任务对象 | 
+| withEndAction(Runnable runnable) | 设置用于动画监听结束（Animator.AnimatorListener）时运行的Runnable任务对象 | 
 
 ## 视图动画（View Animation）
 使用View Animation在view上执行补间动画。补间动画使用诸如动画起点，终点，大小，旋转和其他常见动画

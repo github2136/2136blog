@@ -27,7 +27,7 @@
     * `setStrokeWidth`设置线条宽度
     * `setTextSize`设置文字大小
     * `setAntiAlias`设置开启抗锯齿
-    * `setStrokeCap`设置点或线为圆角**低版本手机不是100%有效**
+    * `setStrokeCap`设置点或线为圆角（注意关闭硬件加速，不然可能没有效果）
 1. 重新`onDraw()`绘制自定义内容
     * `drawColor` `drawRGB` `drawARGB`给画布设置颜色`RGB`值为0..255
     * `drawRect`绘制矩形使用`left` `right` `top` `bottom`设置矩形四边与屏幕左上角位置或使用`Rect`和`RectF`

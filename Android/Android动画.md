@@ -1,5 +1,5 @@
 # 动画分类
-https://developer.android.google.cn/guide/topics/graphics/index.html
+https://developer.android.google.cn/training/animation
 ##### 属性动画（Property Animation）
 该功能是在Android3.0（API11）时引入，可以为任何对象的属性设置动画，该功能是可扩展的，并允许自动以属性动画
 ##### 视图动画（View Animation）
@@ -180,7 +180,7 @@ rotationAnim.setDuration(5000ms);
 ```
 
 ## 视图动画（View Animation）
-使用View Animation在view上执行补间动画。补间动画使用诸如动画起点，中点，大小，旋转和其他常见动画
+使用View Animation在view上执行补间动画。补间动画使用诸如动画起点，终点，大小，旋转和其他常见动画
 
 补间动画可以对View执行一系列简单的转换（位置，大小，旋转，透明度）
 
@@ -235,4 +235,62 @@ spaceshipImage.startAnimation(hyperspaceJumpAnimation);
 ```
 作为startAnimation()替代方法，可以使用Animation.setStartTime()定义动画开始时间，然后使用View.setAnimation()将该动画分配给view，关于更多信息参考[Animation Resources](https://developer.android.google.cn/guide/topics/resources/animation-resource.html)
 
-**注意**无论如何移动或调整大小，保存动画的view边界不会再送调整适应它。即使动画超出其view范围也不会被裁剪。但如果超过父view边界，将会裁剪
+**注意**无论如何移动或调整大小，保存动画的view边界不会再送调整适应它。即使动画超出其view范围也不会被裁剪。但如果超过父view边界，将会裁剪  
+
+**通用属性**
+|属性|说明|
+|-|-|
+|android:detachWallpaper|是否在比壁纸上运行（未具体使用过）|
+|android:duration|动画持续时间（毫秒）|
+|android:fillAfter|动画结束时是否保持最后状态|
+|android:fillBefore|动画结束时是否还原为开始状态|
+|android:fillEnabled|设置为`true`则会使用`fillBefore`的值|
+|android:interpolator|动画插值器|
+|android:repeatCount|动画重复次数（infinite表示无限次数，默认值0）|
+|android:repeatMode|重复模式（reverse、restart）|
+|android:startOffset|动画开始延迟时间（毫秒）|
+|android:zAdjustment|Z轴位置| 
+
+**alpha**
+|属性|说明|
+|-|-|
+|android:fromAlpha|起始透明度（0.0-1.0）|
+|android:toAlpha|结束透明度|
+
+**alpha**
+|属性|说明|
+|-|-|
+|android:fromAlpha|起始透明度（0.0-1.0）|
+|android:toAlpha|结束透明度|
+
+**rotate**
+|属性|说明|
+|-|-|
+|android:fromDegrees|起始角度(正数表示顺时针，负数表示逆时针)|
+|android:toDegrees|结束角度|
+|android:pivotX|旋转X点（纯数字表示像素坐标，%表示当前控件百分百，p结尾表示以父控件）|
+|android:pivotY|旋转Y点|
+
+**scale**
+|属性|说明|
+|-|-|
+|android:fromXScale|X轴起始缩放比例（1.0-0.0）|
+|android:fromYScale|Y轴起始缩放比例|
+|android:toXScale|X轴结束缩放比例|
+|android:toYScale|Y轴结束缩放比例|
+|android:pivotX|缩放X点|
+|android:pivotY|缩放Y点| 
+
+**translate**
+|属性|说明|
+|-|-|
+|android:fromXDelta|移动起始X轴（纯数字表示像素坐标，%表示当前控件百分百，p结尾表示以父控件）|
+|android:fromYDelta|移动起始Y轴|
+|android:toXDelta|结束X轴|
+|android:toYDelta|结束Y轴|
+
+```java
+Animation anim = AnimationUtils.loadAnimation(this, R.anim.anim_translate);
+view.startAnimation(anim);//开始播放动画
+view.clearAnimation(anim);//取消动画
+```

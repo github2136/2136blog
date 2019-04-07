@@ -65,7 +65,7 @@ println("date = $date1")
 
 ## takeUnless
 与`takeIf`相反
-```
+```kotlin
 val date = Date().takeUnless {
     // 是否在2018年元旦后
     it.after(Date(2018 - 1900, 0, 1))

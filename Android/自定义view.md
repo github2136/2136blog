@@ -108,3 +108,40 @@
 1. Xfermode
     * `PorterDuffXfermode`通过特定的Porter-Duff来设置两个图形的叠加绘制，绘制是注意使用离屏缓冲`Canvas.saveLayer();canvas.restoreToCount(saved);`
 1. StaticLayout文字绘制可根据设置的宽设置自动给文字换行
+1. 范围裁切
+    * 使用`clipRect()`可以裁剪出一个矩形让只有绘制在矩形内的才显示
+    * 使用`clipPath()`可以裁切出一个自定义图形，在`Path`中使用`setFillType`还可以指定填充方式
+    ![图2](/Android/%E8%87%AA%E5%AE%9A%E4%B9%89view/2.jpg)
+1. 几何变换
+    * `Canvas`
+        * `translate(float dx, float dy)`平移
+        * `rotate(float degrees, float px, float py)`旋转
+        * `scale(float sx, float sy, float px, float py)`缩放
+        * `skew(float sx, float sy)`错切
+    * `Matrix`        
+        * `setXXX`表示清空之前的变换并设置为当前变换
+        * `preXXX`表示插入变换队列的头部
+        * `postXXX`表示插入变换队列的尾部
+        * `setRectToRect`表示将`RectF src`变换为`RectF dst`变换类型有4种
+            * `FILL`填充放大
+            * `START`左上对齐
+            * `CENTER`居中
+            * `END`右下对齐
+
+            ![图3](/Android/%E8%87%AA%E5%AE%9A%E4%B9%89view/3.png)
+        * `setPolyToPoly`针对四角的变换，最多4个点（每个点一个X坐标一个Y坐标）
+            * 变换一个点表示平移
+            * 变换两个点表示旋转
+            * 变换三个点表示错切
+            * 变换四个点表示透视
+        * `invert`矩阵反转
+        * 注意使用`Matrix`时建议使用`canvas.concat(matrix);`，在不同系统中`canvas.setMatrix(matrix);`显示的结果可能不同
+    * `Camera`三维变换有XYZ三个坐标系，以左上角为原点，`X轴`右正左负，`Y轴`上正下负，`Z轴`内正外负，下图为`Camera`的旋转方向
+        ![图4](/Android/%E8%87%AA%E5%AE%9A%E4%B9%89view/4.png)
+        * `applyToCanvas(canvas)`将变换应用到Canvas
+        * `rotate*()`可以针对三个坐标系进行旋转
+        * 建议使用`Canvas`的`translate`来移动原点
+        * `setLocation(X,Y,Z)`移动虚拟相机位置，移动单位为英寸一英寸为72像素默认为-8英寸
+        
+自定义view硬件限制
+![图5](/Android/%E8%87%AA%E5%AE%9A%E4%B9%89view/5.jpg)

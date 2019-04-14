@@ -125,6 +125,10 @@ ValueAnimator fadeAnim = ObjectAnimator.ofFloat(newBall, "alpha", 1f, 0f);
 fadeAnim.setDuration(250);
 AnimatorSet animatorSet = new AnimatorSet();
 animatorSet.play(bouncer).before(fadeAnim);
+//依次播放
+animatorSet.playSequentially(fadeAnim,bouncer);
+//同时播放
+animatorSet.playTogether(fadeAnim,bouncer);
 animatorSet.start();
 ```
 #### 动画监听

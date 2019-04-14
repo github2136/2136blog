@@ -111,6 +111,7 @@
 1. 范围裁切
     * 使用`clipRect()`可以裁剪出一个矩形让只有绘制在矩形内的才显示
     * 使用`clipPath()`可以裁切出一个自定义图形，在`Path`中使用`setFillType`还可以指定填充方式
+
     ![图2](/Android/%E8%87%AA%E5%AE%9A%E4%B9%89view/2.jpg)
 1. 几何变换
     * `Canvas`
@@ -137,6 +138,7 @@
         * `invert`矩阵反转
         * 注意使用`Matrix`时建议使用`canvas.concat(matrix);`，在不同系统中`canvas.setMatrix(matrix);`显示的结果可能不同
     * `Camera`三维变换有XYZ三个坐标系，以左上角为原点，`X轴`右正左负，`Y轴`上正下负，`Z轴`内正外负，下图为`Camera`的旋转方向
+
         ![图4](/Android/%E8%87%AA%E5%AE%9A%E4%B9%89view/4.png)
         * `applyToCanvas(canvas)`将变换应用到Canvas
         * `rotate*()`可以针对三个坐标系进行旋转
@@ -144,4 +146,5 @@
         * `setLocation(X,Y,Z)`移动虚拟相机位置，移动单位为英寸一英寸为72像素默认为-8英寸
         
 自定义view硬件限制
+
 ![图5](/Android/%E8%87%AA%E5%AE%9A%E4%B9%89view/5.jpg)

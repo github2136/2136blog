@@ -37,19 +37,23 @@ https://developer.android.google.cn/guide/topics/permissions/index.html
 |           |RECEIVE_MMS|
 |STORAGE    |READ_EXTERNAL_STORAGE|
 |           |WRITE_EXTERNAL_STORAGE|
-
+完整实例查看`Android6.0(api 23)动态权限请求.kt`
 权限请求
 ```java
 //请求权限
 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
     //检查权限
-    int permission = checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
+    int permission1 = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+    int permission2 = checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
     //允许
     //PackageManager.PERMISSION_GRANTED
     //拒绝
     //PackageManager.PERMISSION_DENIED
-    //请求权限
-    requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.RECORD_AUDIO}, 10);
+    if(permission1 == PackageManager.PERMISSION_DENIED ||
+	   permission2 == PackageManager.PERMISSION_DENIED){
+	   	//请求权限
+    	requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.RECORD_AUDIO}, 10);
+    }    
 }
 ```
 响应
@@ -64,11 +68,12 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
     // 版本兼容
     if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M)
         return;
-
+    boolean allow = true;
     for (int i = 0, len = permissions.length; i < len; i++) {
         String permission = permissions[i];
         //  拒绝的权限
         if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+        	allow = false
             //判断是否点击不再提示
             boolean showRationale = shouldShowRequestPermissionRationale(permission);
             if (!showRationale) {
@@ -78,11 +83,17 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                 intent.setData(uri);
                 startActivity(intent);
                 break;
-            } else {
-                // 用户点击了取消...
-                Toast.makeText(this, "没有对应权限无法正常使用", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+    if(!allow){
+       // 用户点击了取消...
+        AlertDialog.Builder(this)
+            .setTitle("警告")
+            .setMessage("没有对应权限无法正常使用，重新请求权限")
+            .setPositiveButton("请求权限",null)
+            .setNegativeButton("关闭应用",null)
+            .show()
     }
 }
 ```

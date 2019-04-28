@@ -34,7 +34,7 @@ println(result)
 ```
 
 ## apply
-在函数内操作对象，并返当前对象，可以在不使用`it`的情况下调用属性、方法，`it`表示当前对象
+在函数内操作对象，并返当前对象，可以在不使用`this`的情况下调用属性、方法，`this`表示当前对象
 ```kotlin 
 ArrayList<String>().apply {
     add("testApply")

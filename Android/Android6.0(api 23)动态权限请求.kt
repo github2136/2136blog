@@ -42,7 +42,7 @@ class LaunchActivity : BaseActivity<LaunchPresenter>() {
             var permissionStatus = PackageManager.PERMISSION_GRANTED
             //检查权限
             for (per in permissionArrayMap) {
-                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
+                if (checkSelfPermission(per.key) == PackageManager.PERMISSION_DENIED) {
                     //有拒绝权限
                     permissionStatus = PackageManager.PERMISSION_DENIED
                     break

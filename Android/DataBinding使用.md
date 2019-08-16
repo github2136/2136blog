@@ -314,6 +314,7 @@ private static class User extends BaseObservable {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+        //notifyChange();刷新所有值
         notifyPropertyChanged(BR.firstName);
     }
 

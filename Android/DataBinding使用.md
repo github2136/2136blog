@@ -2,12 +2,20 @@
 ## 集成DataBinding
 在项目module的`build.gradle`中添加
 ```gradle
-android {
-    ...
+apply plugin: 'kotlin-kapt'//需要使用kapt作为注解 处理器
+kapt {
+    generateStubs = true
+}
+  android{
+    ....
     dataBinding {
         enabled = true
     }
-}
+  }
+  dependencies{
+    ///...
+    kapt "com.android.databinding:compiler:3.1.4"//dataBinding需要的编译处理工具
+  }
 ```
 ## 布局使用
 在布局文件的根节点上使用`alt+enter`->`Convert to data binding layout`将布局改为DataBinding的布局
@@ -325,6 +333,16 @@ private static class User extends BaseObservable {
 }
 ```
 kotlin使用`Observable`子类定义变量
+```kotlin
+class DataBindingEntity : BaseObservable() {
+    @get:Bindable//这个bindable可以只放在get方法
+    var test: Int = 0
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.test)
+        }
+}
+```
 ## 生成绑定类
 绑定类有几种方法
 * DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)

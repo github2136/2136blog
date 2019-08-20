@@ -434,6 +434,31 @@ fun convertColorToDrawable(color: Int) = ColorDrawable(color)
     android:checked="@={viewmodel.rememberMe}"
 />
 ```
+不建议在EditText或其他可编辑的控件中使用数字属性（Int，Long等等）双向绑定，如果要使用可以使用以下方法
+```kotlin
+object Other {
+    @BindingAdapter("android:text")
+    @JvmStatic
+    fun setText(view: EditText, value: Int) {
+        if (view.text.toString() != value.toString()) {
+            view.setText(Integer.toString(value))
+        }
+    }
+
+    @InverseBindingAdapter(attribute = "android:text")
+    @JvmStatic
+    fun getText(view: EditText): Int? {
+        val str = view.text.toString()
+        return if (str.isEmpty()) {
+            null
+        } else {
+            Integer.parseInt(str)
+        }
+    }
+}
+```
+使用此方法后该编辑框不会出现无字符串情形至少会有个0，或使用
+`app:onFocusChangeListener="@{(view, hasFocus) -> activity.setText(((EditText)view).getText().toString(), hasFocus)}"`、`app:addTextChangedListener="@{activity.textWatcher}"`等方法监听内容变化自行操作对象
 ### 自定义属性双向绑定
 例如要对自定义类`MyView`的自定义`time`属性设置双向绑定
 1. 注解@BindingAdapter设置初始化方法

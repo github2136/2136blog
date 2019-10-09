@@ -14,7 +14,8 @@ kapt {
   }
   dependencies{
     ///...
-    kapt "com.android.databinding:compiler:3.1.4"//dataBinding需要的编译处理工具
+    kapt "com.android.databinding:compiler:3.1.4"
+    kapt 'android.arch.lifecycle:compiler:1.1.1'
   }
 ```
 ## 布局使用

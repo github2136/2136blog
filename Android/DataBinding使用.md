@@ -1,4 +1,5 @@
 # DataBinding
+**Windows系统下DataBinding中不能直接在xml中使用中文，如果要显示中文必须使用`strings.xml`引用或使用变量**
 ## 集成DataBinding
 在项目module的`build.gradle`中添加
 ```gradle

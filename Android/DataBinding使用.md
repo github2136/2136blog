@@ -143,6 +143,10 @@ android:padding="@{large? @dimen/largePadding : @dimen/smallPadding}"
 ```xml
 android:text="@{@string/nameFormat(firstName, lastName)}"
 ```
+资源文件
+```
+<string name="nameFormat">nameFormat with %1$s and %2$s</string>
+```
 某些资源需要显示的判断类型
 |类型|正常使用|表达式使用|
 |-|-|-|

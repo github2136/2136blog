@@ -4,3 +4,4 @@ spring-boot项目初始化使用IDEA，File -> New -> Project -> Spring Initiali
 * 添加`DevTools`
 * File -> Settings -> Build,Execution,Deplyment -> Compiler，勾选 Build project automatically
 * Shift+Ctrl+Alt+/ -> Registry -> 勾选 compiler.automake.allow.when.app.running
+#### 单元测试

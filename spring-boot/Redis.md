@@ -47,6 +47,7 @@ redis 127.0.0.1:6379> CONFIG GET loglevel
 2) "notice"
 ```
 参数说明
+
 |配置项|说明|
 |-|-|
 |daemonize no|Redis 默认不是以守护进程的方式运行，可以通过该配置项修改，使用 yes 启用守护进程（Windows 不支持守护线程的配置为 no ）|	
@@ -166,6 +167,7 @@ E:\redis-64.3.0.503>redis-cli.exe -h 127.0.0.1 -p 6379 -a password
 PONG
 127.0.0.1:6379>
 ```
+
 |命令|说明|
 |-|-|
 |del key|该命令用于在 key 存在时删除 key。|
@@ -292,6 +294,7 @@ PONG
 #### 基数统计HyperLogLog
 HyperLogLog用来做基数统计算法，在输入预算数量或体积非常大是，计算基数所需控件总是固定的并且很小。Redis里面HyperLogLog使用12k内存记录基数，且不会一次占用12k，HyperLogLog只是用来计算基数不会保存各个元素   
 数据集中有{1, 3, 5, 7, 5, 7, 8}，那么这个数据集的基数集为{1, 3, 5, 7, 8}，基数为5，基数有0.81%的误差
+
 |命令|说明|
 |-|-|
 |pfadd key element [element ...] |添加指定元素到 HyperLogLog 中。|
@@ -299,6 +302,7 @@ HyperLogLog用来做基数统计算法，在输入预算数量或体积非常大
 |pfmerge destkey sourcekey [sourcekey ...] |将多个 HyperLogLog 合并为一个 HyperLogLog|
 #### 发布订阅
 由一个客户端发布订阅创建频道，再由另一个客户端发送信息
+
 |命令|说明|
 |-|-|
 |psubscribe pattern [pattern ...] |订阅一个或多个符合给定模式的频道。以\*号做通配符，例如it\*表示接收已it开头的频道|
@@ -323,6 +327,7 @@ Redis 事务可以一次执行多个命令， 并且带有以下三个重要的�
 * 执行事务。
 
 事务由`multi`开始，然后将多个命令放到队列中，最后由`exec`执行触发，Redis的命令有原子性，但事务没有，事务执行中间出错并不会回滚之前操作的命令，事务更像一个命令打包，用来防止在一串命令中被插入其他命令
+
 |命令|说明|
 |-|-|
 |discard |取消事务，放弃执行事务块内的所有命令。|
@@ -343,6 +348,7 @@ QUEUED
 如果在`watch`后其他客户端修改了a的值，那么后面的事务将不会执行
 #### 脚本
 Redis 脚本使用 Lua 解释器来执行脚本。 Redis 2.6 版本通过内嵌支持 Lua 环境。执行脚本的常用命令为 EVAL。
+
 |命令|说明|
 |-|-|
 |eval script numkeys key [key ...] arg [arg ...] |执行 lua 脚本。|

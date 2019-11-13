@@ -1,11 +1,13 @@
 #### Redis
-Redis是一种非关系型数据库，它通常被称为数据结构服务器，因为值（value）可以是 字符串(String), 哈希(Hash), 列表(list), 集合(sets) 和 有序集合(sorted sets)等类型。
+Redis是一种非关系型数据库，它通常被称为数据结构服务器，因为值（value）可以是 字符串(String), 哈希(Hash), 列表(list), 集合(sets)，有序集合(sorted sets)，位图（bitmap），地理信息（geo）等类型。
 基本数据结构
 * String: 字符串
 * Hash: 散列
 * List: 列表
 * Set: 集合
 * Sorted Set: 有序集合
+* Bitmap：位图（版本>=2.2.0）
+* Geo：地理信息（版本>=3.2.0）
 
 Redis 与其他 key - value 缓存产品有以下三个特点：
 * Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。
@@ -190,15 +192,14 @@ PONG
 **以下命令如果使用到范围start end都表示从开始位置到结束位置（包括结束位置），例如getrange a 0 0则会返回第一个字符**
 **使用scan迭代使用count参数可能出现返回结果多余count的情况**
 * String常用命令
+
     |命令|说明|
     |-|-|
     |set key value|设置指定 key 的值|
     |get key|获取指定 key 的值。|
     |getrange key start end|返回 key 中字符串值的子字符|
     |getset key value|将给定 key 的值设为 value ，并返回 key 的旧值(old value)。|
-    |getbit key offset|对 key 所储存的字符串值，获取指定偏移量上的位(bit)。|
     |mget key1 [key2..]|获取所有(一个或多个)给定 key 的值。|
-    |setbit key offset value|对 key 所储存的字符串值，设置或清除指定偏移量上的位(bit)。|
     |setex key seconds value|将值 value 关联到 key ，并将 key 的过期时间设为 seconds (以秒为单位)。|
     |setnx key value|只有在 key 不存在时设置 key 的值。|
     |setrange key offset value|用 value 参数覆写给定 key 所储存的字符串值，从偏移量 offset 开始。|
@@ -214,6 +215,7 @@ PONG
     |append key value|如果 key 已经存在并且是一个字符串， APPEND 命令将指定的 value 追加到该 key 原来值（value）的末尾。|
     |scan cursor [match pattern] [count count] |迭代所有key，返回值里面两个返回值，本次迭代出来的下标和本次迭代的key，迭代时可以做过滤。版本需要大于2.8.0|
 * Hash常用命令
+
     |命令|说明|
     |-|-|
     |hdel key field1 [field2] |删除一个或多个哈希表字段|
@@ -231,6 +233,7 @@ PONG
     |hvals key |获取哈希表中所有值|
     |hscan key cursor [match pattern] [count count] |迭代哈希表中指定key的field|
 * List常用命令
+
     |命令|说明|
     |-|-|
     |blpop key1 [key2 ] timeout |移出并获取列表的第一个元素，返回key和弹出的元素，如果列表没有元素会阻塞列表直到等待超时（秒）或发现可弹出元素为止。|
@@ -251,6 +254,7 @@ PONG
     |rpush key value1 [value2] |在列表中添加一个或多个值|
     |rpushx key value |将一个值插入到已存在的列表尾部，列表不存在时操作无效|
 * Set常用命令
+
     |命令|说明|
     |-|-|
     |sadd key member1 [member2] |向集合添加一个或多个成员|
@@ -269,6 +273,7 @@ PONG
     |sunionstore destination key1 [key2] |所有给定集合的并集存储在 destination 集合中|
     |sscan key cursor [match pattern] [count count]| 迭代集合中的元素|
 * SortedSet常用方法
+
     |命令|说明|
     |-|-|
     |zadd key score1 member1 [score2 member2] |向有序集合添加一个或多个成员，或者更新已存在成员的分数|
@@ -291,6 +296,38 @@ PONG
     |zscore key member |返回有序集中，成员的分数值|
     |zunionstore destination numkeys key [key ...] |计算给定的一个或多个有序集的并集，并存储在新的 key 中|
     |zscan key cursor [match pattern] [count count]| 迭代有序集合中的元素（包括元素成员和元素分值）|
+*  Bitmap常用方法
+
+    |命令|说明|
+    |-|-|
+    |setbit key offset value|对 key 所储存的字符串值，设置或清除指定偏移量上的位(bit)。|
+    |getbit key offset|对 key 所储存的字符串值，获取指定偏移量上的位(bit)。|
+    |bitcount key start end|计算给定字符串中，被设置为 1 的比特位的数量，也可指定范围。|
+    |bitpos key start end|返回位图中第一个值为 bit 的二进制位的位置，也可指定范围。|
+    |bitop subcommand destkey key [key ...]|对一个或多个保存二进制位的字符串 key 进行位元操作，并将结果保存到 destkey 上。|
+    |bitfield|命令可以将一个 Redis 字符串看作是一个由二进制位组成的数组， 并对这个数组中储存的长度不同的整数进行访问 （被储存的整数无需进行对齐）|
+    * bitop的subcommand 除了 not 操作之外，其他操作都可以接受一个或多个 key 作为输入。
+        * and 对一个或多个 key 求逻辑并，并将结果保存到 destkey 。
+        * or 对一个或多个 key 求逻辑或，并将结果保存到 destkey 。
+        * xor 对一个或多个 key 求逻辑异或，并将结果保存到 destkey 。
+        * not 对给定 key 求逻辑非，并将结果保存到 destkey 。
+
+* Geo常用方法  
+    GEOADD 命令以标准的 x,y 格式接受参数， 所以用户必须先输入经度， 然后再输入纬度。 GEOADD 能够记录的坐标是有限的： 非常接近两极的区域是无法被索引的。 精确的坐标限制由 EPSG:900913 / EPSG:3785 / OSGEO:41001 等坐标系统定义， 具体如下：
+    * 有效的经度介于 -180 度至 180 度之间。
+    * 有效的纬度介于 -85.05112878 度至 85.05112878 度之间。  
+    
+    当用户尝试输入一个超出范围的经度或者纬度时， GEOADD 命令将返回一个错误。
+
+    |命令|说明|
+    |-|-|
+    |geoadd key longitude latitude member |增加某个地理位置的坐标|
+    |geopos key member [member …]|获取某个地理位置的坐标|
+    |geodist key member1 member2 [unit]|获取两个地理位置的距离|
+    |georadius key longitude latitude radius m|km|ft|mi [withcoord] [withdist] [withhash] [asc|desc] [count count]|根据给定地理位置坐标获取指定范围内的地理位置集合|
+    |georadiusbymember key member radius m|km|ft|mi [withcoord] [withdist] [withhash] [asc|desc] [count count]|根据给定地理位置获取指定范围内的地理位置集合|
+    |geohash key member [member …]|获取某个地理位置的 geohash 值|
+
 #### 基数统计HyperLogLog
 HyperLogLog用来做基数统计算法，在输入预算数量或体积非常大是，计算基数所需控件总是固定的并且很小。Redis里面HyperLogLog使用12k内存记录基数，且不会一次占用12k，HyperLogLog只是用来计算基数不会保存各个元素   
 数据集中有{1, 3, 5, 7, 5, 7, 8}，那么这个数据集的基数集为{1, 3, 5, 7, 8}，基数为5，基数有0.81%的误差

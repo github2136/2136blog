@@ -263,3 +263,29 @@ public interface UserDao extends JpaRepository<User, Long> {
     User findByName(String name);
 }
 ```
+##### 开启定时任务
+在启动类上加上`@EnableScheduling`开启定时任务  
+添加定时任务类
+```java
+@Component
+public class SchedulerTask {
+    private int count = 0;
+
+    @Scheduled(cron="*/6 * * * * ?")
+    private void proecee() {
+        System.out.println("this is scheduler task runing  " + (count++));
+    }
+
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+    @Scheduled(fixedRate = 6000)
+    public void reportCurrentTime() {
+        System.out.println("现在时间：" + dateFormat.format(new Date()));
+    }
+
+}
+```
+定时任务分为两种，一种是使用cron表达式，一种是设置延迟时间
+* @Scheduled(fixedRate = 6000) ：上一次开始执行时间点之后6秒再执行
+* @Scheduled(fixedDelay = 6000) ：上一次执行完毕时间点之后6秒再执行
+* @Scheduled(initialDelay=1000, fixedRate=6000) ：第一次延迟1秒后执行，之后按 fixedRate 的规则每6秒执行一次

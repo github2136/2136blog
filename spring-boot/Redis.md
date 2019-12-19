@@ -1,4 +1,19 @@
-#### Redis
+<h1> Redis</h1>
+<!-- TOC -->
+
+- [Redis安装](#redis安装)
+    - [Redis配置](#redis配置)
+    - [Redis数据类型](#redis数据类型)
+    - [Redis命令](#redis命令)
+- [基数统计HyperLogLog](#基数统计hyperloglog)
+- [发布订阅](#发布订阅)
+- [事务](#事务)
+- [脚本](#脚本)
+- [连接](#连接)
+- [服务器命令](#服务器命令)
+
+<!-- /TOC -->
+
 Redis是一种非关系型数据库，它通常被称为数据结构服务器，因为值（value）可以是 字符串(String), 哈希(Hash), 列表(list), 集合(sets)，有序集合(sorted sets)，位图（bitmap），地理信息（geo）等类型。
 基本数据结构
 * String: 字符串
@@ -24,12 +39,14 @@ Redis与其他key-value存储有什么不同？
 * Redis有着更为复杂的数据结构并且提供对他们的原子性操作，这是一个不同于其他数据库的进化路径。Redis的数据类型都是基于基本数据结构的同时对程序员透明，无需进行额外的抽象。
 
 * Redis运行在内存中但是可以持久化到磁盘，所以在对不同数据集进行高速读写时需要权衡内存，因为数据量不能大于硬件内存。在内存数据库方面的另一个优点是，相比在磁盘上相同的复杂的数据结构，在内存中操作起来非常简单，这样Redis可以做很多内部复杂性很强的事情。同时，在磁盘格式方面他们是紧凑的以追加的方式产生的，因为他们并不需要进行随机访问。
-#### Redis安装
+
+## .1. Redis安装
 Windows下载地址：https://github.com/MSOpenTech/redis/releases  
 下载解压后运行`redis-server.exe`或者用命令行执行`redis-server.exe redis.windows.conf`按配置启动`服务端`，然后开启一个新的命令行界面，切换到`redis`目录运行`redis-cli.exe -h 127.0.0.1 -p 6379`打开`客户端`，在启动`redis-cli.exe`命令后面加上`--raw`可以避免中文乱码问题  
 * 设置值`set myKey abc`
 * 取值`get myKey`
-##### Redis配置
+
+### .1.1. Redis配置
 `Redis`的Windows版配置在安装目录的`redis.windows.conf`里，可以通过config命令查看或设置配置项
 查看log级别
 ```
@@ -82,7 +99,8 @@ redis 127.0.0.1:6379> CONFIG GET loglevel
 |hash-max-zipmap-entries 64<br/>hash-max-zipmap-value 512|指定在超过一定的数量或者最大的元素超过某一临界值时，采用一种特殊的哈希算法|
 |activerehashing yes|指定是否激活重置哈希，默认为开启（后面在介绍 Redis 的哈希算法时具体介绍）|
 |include /path/to/local.conf|指定包含其它的配置文件，可以在同一主机上多个Redis实例之间使用同一份配置文件，而同时各个实例又拥有自己的特定配置文件|
-##### Redis数据类型
+
+### .1.2. Redis数据类型
 Redis支持五种数据类型：String（字符串），Hash（哈希），List（列表），Set（集合），Zset（有序集合）
 * String是Redis基本数据类型，一个key对应一个value。String类型是二进制安全的，意思是String可以包含任何数据，比如jpg图片或者序列号对象，最大能存512MB。
     > 添加：**set** key member  
@@ -155,7 +173,8 @@ Redis支持五种数据类型：String（字符串），Hash（哈希），List�
     2) "rabitmq"
     3) "redis"
     ```
-##### Redis命令
+
+### .1.3. Redis命令
 打开`redis-cli.exe`会启动连接本地的客户端，使用`ping`命令来检测Redis服务是否开启
 ```
 127.0.0.1:6379> ping
@@ -328,7 +347,7 @@ PONG
     |georadiusbymember key member radius m|km|ft|mi [withcoord] [withdist] [withhash] [asc|desc] [count count]|根据给定地理位置获取指定范围内的地理位置集合|
     |geohash key member [member …]|获取某个地理位置的 geohash 值|
 
-#### 基数统计HyperLogLog
+## .2. 基数统计HyperLogLog
 HyperLogLog用来做基数统计算法，在输入预算数量或体积非常大是，计算基数所需控件总是固定的并且很小。Redis里面HyperLogLog使用12k内存记录基数，且不会一次占用12k，HyperLogLog只是用来计算基数不会保存各个元素   
 数据集中有{1, 3, 5, 7, 5, 7, 8}，那么这个数据集的基数集为{1, 3, 5, 7, 8}，基数为5，基数有0.81%的误差
 
@@ -337,7 +356,8 @@ HyperLogLog用来做基数统计算法，在输入预算数量或体积非常大
 |pfadd key element [element ...] |添加指定元素到 HyperLogLog 中。|
 |pfcount key [key ...] 返回给定 HyperLogLog |的基数估算值。|
 |pfmerge destkey sourcekey [sourcekey ...] |将多个 HyperLogLog 合并为一个 HyperLogLog|
-#### 发布订阅
+
+## .3. 发布订阅
 由一个客户端发布订阅创建频道，再由另一个客户端发送信息
 
 |命令|说明|
@@ -352,7 +372,8 @@ HyperLogLog用来做基数统计算法，在输入预算数量或体积非常大
     * channels 列出当前活跃频道，至少有一个订阅者，可以指定过滤频道类型例如`i*`表示以i开始的频道
     * numsub 返回指定频道订阅数量（subscribe）
     * numpat 返回订阅模式数量（psubscribe）
-#### 事务
+
+## .4. 事务
 Redis 事务可以一次执行多个命令， 并且带有以下三个重要的保证：
 * 批量操作在发送 EXEC 命令前被放入队列缓存。
 * 收到 EXEC 命令后进入事务执行，事务中任意命令执行失败，其余的命令依然被执行。
@@ -383,7 +404,8 @@ QUEUED
 (nil)
 ```
 如果在`watch`后其他客户端修改了a的值，那么后面的事务将不会执行
-#### 脚本
+
+## .5. 脚本
 Redis 脚本使用 Lua 解释器来执行脚本。 Redis 2.6 版本通过内嵌支持 Lua 环境。执行脚本的常用命令为 EVAL。
 
 |命令|说明|
@@ -394,7 +416,8 @@ Redis 脚本使用 Lua 解释器来执行脚本。 Redis 2.6 版本通过内嵌�
 |script flush |从脚本缓存中移除所有脚本。|
 |script kill |杀死当前正在运行的 lua 脚本。|
 |script load script 将脚本 script |添加到脚本缓存中，但并不立即执行这个脚本。|
-#### 连接
+
+## .6. 连接
 |命令|说明|
 |-|-|
 |auth password |验证密码是否正确|
@@ -402,7 +425,8 @@ Redis 脚本使用 Lua 解释器来执行脚本。 Redis 2.6 版本通过内嵌�
 |ping |查看服务是否运行|
 |quit |关闭当前连接|
 |select index |切换到指定的数据库|
-#### 服务器命令
+
+## .7. 服务器命令
 |命令|说明|
 |-|-|
 |bgrewriteaof| 异步执行一个 aof（appendonly file） 文件重写操作|

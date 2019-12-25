@@ -1,6 +1,8 @@
-#### Mybatis
+ Mybatis
+===
 配置Mybatis`implementation 'mysql:mysql-connector-java'`、`implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.1'`
-##### 无配置文件注解版
+## 无配置文件注解版
+***
 ```yaml
 spring:
   datasource:
@@ -53,7 +55,8 @@ public interface UserInfoMapper {
 * 能用`#`就不用`$`，`$`主要用于order by
 
 使用`@Autowired(required = false)`来添加Mapper，如果不添加`required = false`会提示`Could not Autowired`，不影响运行但会有警告提示
-##### 极简XML版
+## 极简XML版
+***
 配置文件额外添加
 ```yaml
 mybatis:
@@ -61,7 +64,8 @@ mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
 ```
 **`classpath`是指`src/main/resources`目录**
-##### mybatis-config.xml
+## mybatis-config.xml
+***
 https://mybatis.org/mybatis-3/zh/configuration.html
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>

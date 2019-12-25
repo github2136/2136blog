@@ -1,4 +1,5 @@
-#### Shiro入门
+Shiro入门
+===
 Apache Shiro 是一个功能强大、灵活的，开源的安全框架。它可以干净利落地处理身份验证、授权、企业会话管理和加密。  
 
 Shiro 能做什么呢？
@@ -103,7 +104,8 @@ INSERT INTO `sys_role_permission` (`permission_id`,`role_id`) VALUES (3,1);
 INSERT INTO `sys_role_permission` (`permission_id`,`role_id`) VALUES (3,2);
 INSERT INTO `sys_user_role` (`role_id`,`uid`) VALUES (1,1);
 ```
-##### Shiro配置
+## Shiro配置
+***
 首先要配置的是 ShiroConfig 类，Apache Shiro 核心通过 Filter 来实现，就好像 SpringMvc 通过 DispachServlet 来主控制一样。 既然是使用 Filter 一般也就能猜到，是通过 URL 规则来进行过滤和权限校验，所以我们需要定义一系列关于 URL 的规则和访问权限
 ```java
 @Configuration

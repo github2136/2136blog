@@ -66,8 +66,8 @@ void main(){
 }  
 **方法1：**在代码前增加四个空格或一个制表符建立代码块
 
-&nbsp;&nbsp;&nbsp;&nbsp;void main(){
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.printlin("hellow world");
+&nbsp;&nbsp;&nbsp;&nbsp;void main(){<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.printlin("hellow world");<br>
 &nbsp;&nbsp;&nbsp;&nbsp;}
 
 效果：

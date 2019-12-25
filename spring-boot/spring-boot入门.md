@@ -1,16 +1,19 @@
-# spring-boot
+spring-boot
+===
 * `IDEAIntelliJ IDEA 2018.3.5 (Ultimate Edition)`
 * `mysql 8.0.16`
 * `spring-boot 2.1.5.RELEASE`
 * `jdk1.8`
 
 spring-boot项目初始化使用IDEA，File -> New -> Project -> Spring Initializr -> 选择Type(Gradle Project)/Language/Packaging/Java Version等信息 -> 添加 Spring Boot DevTools / Spring Web -> Web创建项目基本文件。
-#### 开启热部署
+## 开启热部署
+***
 * 添加`DevTools`
 * File -> Settings -> Build,Execution,Deplyment -> Compiler，勾选 Build project automatically
 * Shift+Ctrl+Alt+/ -> Registry -> 勾选 compiler.automake.allow.when.app.running
 
-#### 编写controller
+## 编写controller
+***
 * 新建类给类名加上`@RestController`注解
 * 给方法加上`@RequestMapping("/hello")`注解，参数为url路径
     ```java
@@ -30,7 +33,8 @@ spring-boot项目初始化使用IDEA，File -> New -> Project -> Spring Initiali
         time-zone: GMT+8
     ```  
 给类添加`@RequestMapping("/hello")`可以设置请求默认前缀
-#### 单元测试
+## 单元测试
+***
 添加`testImplementation 'org.springframework.boot:spring-boot-starter-test'`已支持单元测试
 ```java
 @RunWith(SpringRunner.class)
@@ -59,7 +63,8 @@ public class SpringGradleProjectApplicationTests {
 }
 
 ```
-#### 自定义过滤器
+## 自定义过滤器
+***
 ```java
 @Configuration
 public class WebConfiguration {
@@ -100,7 +105,8 @@ public class WebConfiguration {
     }
 }
 ```
-#### 自定义属性
+## 自定义属性
+***
 自定义属性有两种方法，属性要么在`application.yaml`里面设置值或者设置默认值
 ```java
 @Component
@@ -155,7 +161,8 @@ public class NeoProperties2 {
     }
 }
 ```
-#### 注入方法
+## 注入方法
+***
 * 参数注入
     ```java
     @Autowired
@@ -192,7 +199,8 @@ public class NeoProperties2 {
     }
     ```
     优点：相比构造方法注入参数可以，允许在构造完成后注入
-#### log配置
+## log配置
+***
 设置日志输出地址和输出级别
 ```yaml
 logging:
@@ -200,7 +208,8 @@ logging:
     root: info
   path: user/local/log
 ```
-#### 数据库操作
+## 数据库操作
+***
 添加JPA`implementation 'org.springframework.boot:spring-boot-starter-data-jpa'`、`implementation 'mysql:mysql-connector-java'`  
 连接设置
 ```yaml
@@ -231,7 +240,8 @@ ddl-auto：用于创建更新验证数据库表结构，一共有4个值
     SHOW VARIABLES LIKE '%time_zone%';# 查看是否设置成功
     ```
 * 或者在默认配置文件(默认位置为：C:\ProgramData\MySQL\MySQL Server 8.0\my.ini)里的`[mysqld]`下添加`default-time-zone='+8:00'`，然后重启mysql
-##### 添加实体类和Dao
+## 添加实体类和Dao
+***
 实体类
 ```java
 import java.util.Date;
@@ -263,7 +273,8 @@ public interface UserDao extends JpaRepository<User, Long> {
     User findByName(String name);
 }
 ```
-##### 开启定时任务
+## 开启定时任务
+***
 在启动类上加上`@EnableScheduling`开启定时任务  
 添加定时任务类
 ```java

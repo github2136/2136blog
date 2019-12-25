@@ -1,4 +1,5 @@
-#### Log设置
+Log设置
+===
 https://blog.csdn.net/weixin_41846320/article/details/86078522  
 spring-boot默认使用Logback打印日志，日志等级分为
 * TRACE
@@ -41,6 +42,8 @@ logging:
   exception-conversion-word: '%wEx' #记录异常时使用的转换字，默认%wEx
   config: #日志配置文件路径，例如`classpath:logback.xml`，优先级最高
 ```
+## 日志文件XML配置
+***
 根据不同的日志系统，你可以按如下规则组织配置文件名，就能被正确加载：
 * Logback：logback-spring.xml, logback-spring.groovy, logback.xml, logback.groovy
 * Log4j：log4j-spring.properties, log4j-spring.xml, log4j.properties, log4j.xml
@@ -134,6 +137,7 @@ Spring Boot官方推荐优先使用带有-spring的文件名作为你的日志�
   还有几个不常用的自行查阅文档，使用转换字必须在前面使用`%`
 
   格式化内容
+
   | 示例          | 左对齐 | 最小宽度 | 最大宽度 | 说明                                                                   |
   | ------------- | ------ | -------- | -------- | ---------------------------------------------------------------------- |
   | %20logger     | false  | 20       | none     | 如果内容少于20个字符则在左边添加空格                                   |
@@ -172,6 +176,7 @@ Spring Boot官方推荐优先使用带有-spring的文件名作为你的日志�
   </logger>
   ```
 * 多环境日志输出
+
   根据不同环境（prod:生产环境，test:测试环境，dev:开发环境）来定义不同的日志输出
   ```xml
   <!-- 测试环境+开发环境. 多个使用逗号隔开. -->
@@ -192,7 +197,7 @@ Spring Boot官方推荐优先使用带有-spring的文件名作为你的日志�
       <logger name="com.demo.springgradleproject.control2" level="TRACE"/>
   </configuration>
   ```
-  示例
+* 示例
   ```xml
   <?xml version="1.0" encoding="UTF-8"?>
   <configuration>

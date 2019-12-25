@@ -1,4 +1,5 @@
-#### Redis配置
+Redis配置
+===
 引入Redis`implementation 'org.springframework.boot:spring-boot-starter-data-redis'`/`implementation 'org.apache.commons:commons-pool2'`，在spring
 ```yaml
 spring:
@@ -58,7 +59,8 @@ public class TestRedis{
 }
 ```
 
-#### 简单Redis缓存设置
+## 简单Redis缓存设置
+***
 添加`Redis`引用，设置`Redis`配置，添加类
 ```java
 @Configuration

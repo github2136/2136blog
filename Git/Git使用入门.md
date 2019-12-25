@@ -203,7 +203,7 @@ rm 'test.txt'
 ### 创建项目
 ***
 * 选择`New repository`->输入项目名(项目说明为选填)->选择是否公开项目->然后创建一个空项目
-* 在git终端上输入`$ git remote add origin git@github.com:github2136/gitDemo.git`关联远程库，这个内容可以从github的空项目中看到提示，默认为`http`需要切换到`ssh`，`origin`为默认名称，完全可以使用其他名称，如果关联远程库不小心输入错误可以使用`$ git remote rm origin`来删除然后重新输入
+* 在git终端上输入`$ git remote add origin git@github.com:github2136/gitDemo.git`将本地库关联到远程库，这个内容可以从github的空项目中看到提示，默认为`http`需要切换到`ssh`，`origin`为默认名称，完全可以使用其他名称，如果关联远程库不小心输入错误可以使用`$ git remote rm origin`来删除然后重新输入
 * `$ git push -u origin master`将本地项目推送到远程库，由于远程库是空的，我们第一次推送master分支时，加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
 * 之后的提交可以直接使用`$ git push origin master`
 ### 远程库克隆

@@ -1,5 +1,6 @@
 Git入门笔记
 ===
+[官方文档](https://git-scm.com/book/zh/v2)
 > 笔记是在http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000 网站学习git时所留下的
 ## 安装Git
 ***

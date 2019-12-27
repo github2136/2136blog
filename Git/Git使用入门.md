@@ -199,7 +199,7 @@ rm 'test.txt'
 ### 创建并使用SSH Key
 ***
 * 创建SSH Key
-  `ssh-keygen -t rsa -C "youremail@example.com"`，然后回车选择文件保存位置及密码（密码可以为空），然后就可以在我的文档目录找到.ssh目录里面有`id_rsa`/`id_rsa.pub`两个文件，`id_rsa`为私钥不可公开，`id_rsa.pub`可以公开
+  `ssh-keygen -t rsa -C "youremail@example.com"`，然后回车选择文件保存位置及密码（密码可以为空），然后就可以在我的文档目录找到.ssh目录里面有`id_rsa`/`id_rsa.pub`两个文件，`id_rsa`为私钥不可公开，`id_rsa.pub`可以公开。加上` -f .ssh/xxxxx`可以在指定目录存放key文件
 * 登录打开github找到`settting`->`SSH and GPG keys`->`New SSH key`输入`title`，把`id_rsa.pub`使用文本编辑器打开，内容复制到`key`，点击`Add SSH key`完成
 ### 创建项目
 ***

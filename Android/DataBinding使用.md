@@ -1,24 +1,36 @@
 # DataBinding
-**Windows系统下DataBinding中不能完全在xml中使用中文，如果有编译错误，则需要使用`strings.xml`引用或使用变量**
+**如果是使用java编写逻辑代码，并且在布局xml的DataBinding操作中使用了中文则会提示`Invalid byte 3 of 3-byte UTF-8 sequence.`，此时则需要在`gradle.properties`中添加`org.gradle.jvmargs=-Xmx1536m -Dfile.encoding=UTF-8`**
+
+**如果是使用kotlin编写逻辑代码，并且在布局xml的DataBinding操作中使用了中文则会提示`3 字节的 UTF-8 序列的字节 3 无效。`，如果没使用`kapt`则可以和上面java版使用同样方法处理。如果必须使用`kapt`，则只能在`strings.xml`引用或使用变量**
 ## 集成DataBinding
-在项目module的`build.gradle`中添加
-```gradle
-apply plugin: 'kotlin-kapt'//需要使用kapt作为注解 处理器
-kapt {
-    generateStubs = true
-}
-  android{
-    ....
-    dataBinding {
-        enabled = true
+* AS3.0以下
+    在项目module的`build.gradle`中添加
+    ```gradle
+    apply plugin: 'kotlin-kapt'//需要使用kapt作为注解 处理器
+    kapt {
+        generateStubs = true
     }
+    android{
+        ....
+        dataBinding {
+            enabled = true
+        }
+    }
+    dependencies{
+        ///...
+        kapt "com.android.databinding:compiler:/*与com.android.tools.build:gradle版本号相同*/"
+        kapt 'android.arch.lifecycle:compiler:1.1.1'
+    }
+    ```
+* AS3.0及以上
+  ```
+  android{
+  ....
+      dataBinding {
+          enabled = true
+      }
   }
-  dependencies{
-    ///...
-    kapt "com.android.databinding:compiler:3.1.4"
-    kapt 'android.arch.lifecycle:compiler:1.1.1'
-  }
-```
+  ```
 ## 布局使用
 在布局文件的根节点上使用`alt+enter`->`Convert to data binding layout`将布局改为DataBinding的布局
 ```xml
@@ -191,7 +203,7 @@ class MyHandlers {
    </LinearLayout>
 </layout>
 ```
-* 监听器绑定：此功能适用于Gradl2.0及以上版本，在监听器绑定中，如果原本的事件返回的是`void`，则只要入参相同即可，如果原本事件有返回值则必须按原本返回值设置。例如点击事件默认参数为View返回值为void`override fun onClick(v: View?) { }`，那么定义监听器绑定时没有任何限制可以有任意参数和任意返回值，再例如长按事件默认参数为View返回值为void`override fun onLongClick(v: View?): Boolean {}`，那么定义的监听器绑定必须以`Boolean`做为返回值。当事件触发时才会执行绑定表达式操作
+* 监听器绑定：此功能适用于Gradl2.0及以上版本，在监听器绑定中，如果原本的事件返回的是`void`，则只要入参相同即可，如果原本事件有返回值则必须按原本返回值设置。例如点击事件默认参数为View返回值为void `override fun onClick(v: View?) { }`，那么定义监听器绑定时没有任何限制可以有任意参数和任意返回值，再例如长按事件默认参数为View返回值为void `override fun onLongClick(v: View?): Boolean {}`，那么定义的监听器绑定必须以`Boolean`做为返回值。当事件触发时才会执行绑定表达式操作
 
 ```kotlin
 class Presenter {

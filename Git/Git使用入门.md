@@ -58,7 +58,7 @@ $ git add file2.txt file3.txt
 $ git commit -m 'add 3 files'
 ```
 如果提交时忘了加上`-m "msg"`，则会显示  
-![git](/Git/img/git1.png)  
+![git](img/git1.png)  
 此时按下`inster`在最上方输入提交说明然后，按`Esc`在最下方输入`:wq`保存并提交
 
 ### 查看状态

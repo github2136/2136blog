@@ -5,7 +5,7 @@ Bonobo Git Server是基于.net平台开发的ASP MVC网站所以需要IIS服务�
 https://bonobogitserver.com
 ## 启用IIS服务器
 在控制面板->程序和功能->打开或关闭Windows功能，勾选  
-![IIS设置](/Git/img/git2.png)
+![IIS设置](img/git2.png)
 ## 配置Bonobo Git Server
 * 将下载的压缩包解压放在`C:\inetpub\wwwroot`目录下
 * 修改`APP_Data`目录权限

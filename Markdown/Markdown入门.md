@@ -150,7 +150,7 @@ This is [an example](http://example.com/ "Title") inline link.
 [This link](http://example.net/) has no title attribute.
 如果链接的是同样的主机资源还能使用相对路径
 ```
-See my [About](/about/) page for details.
+See my [About](about) page for details.
 ```
 参考式是在链接文字的方括号后面再加上另一个方括号，在第二个方括号里面填入标记。
 ```
@@ -206,8 +206,8 @@ Please don't use any `<blink>` tags.
 图片与链接类似也分为行内式与参考式。
 行内式
 ```
-![Alt text](/path/to/img.jpg)
-![Alt text](/path/to/img.jpg "Optional title")
+![Alt text](path/to/img.jpg)
+![Alt text](path/to/img.jpg "Optional title")
 ```
 说明
 

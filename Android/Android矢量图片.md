@@ -4,7 +4,7 @@ https://developer.android.com/studio/write/vector-asset-studio
 在Android5.0（Lollipop API21）后新增对矢量图标的显示。
 **Android不能直接使用SVG、PSD文件**
 使用AS将SVG文件转换为Android可以使用的vector
-![图1](/Android/Android矢量图片/1.png)   
+![图1](Android矢量图片/1.png)   
 转换结果
 ```xml
 <vector xmlns:android="http://schemas.android.com/apk/res/android"

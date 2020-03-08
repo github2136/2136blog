@@ -53,6 +53,8 @@
     * `setLinearText`
     * `getFontSpacing`获取行高
     * `getFontMetrics`获取文字指标`ascent/descent/top/bottom/leading`
+        * ![图6](%E8%87%AA%E5%AE%9A%E4%B9%89view/6.png) 
+        * 以baseLine为0，baseLine上的为负数，baseLine下为正数，leading则表示上一行字符的descent到该行字符的ascent之间的距离，默认为0；可以使用setLineSpacing来改变值
     * `getTextBounds`获取文字尺寸
     * `measureText`获取文字宽度
     * `getTextWidths`获取每个字符宽度
@@ -70,7 +72,7 @@
     * `drawColor` `drawRGB` `drawARGB`给画布设置颜色`RGB`值为0..255
     * `drawRect`绘制矩形使用`left` `right` `top` `bottom`设置矩形四边与屏幕左上角位置或使用`Rect`和`RectF`
         > 如果`Paint`的Style设置为`FILL`则忽略`setStrokeWidth`并完全按坐标显示一个矩形，如果设置为`STROKE`或`FILL_AND_STROKE`并且设置`setStrokeWidth`为较大的值时，则该矩形实际大小为矩形大小加线条宽度的一半
-    ![图1](/Android/%E8%87%AA%E5%AE%9A%E4%B9%89view/1.png)  
+    ![图1](%E8%87%AA%E5%AE%9A%E4%B9%89view/1.png)  
     * `drawCircle`绘制圆形参数为圆心坐标及半径
     * `drawPoint`设置点坐标使用`setStrokeWidth`设置点直径使用`paint.setStrokeCap(Paint.Cap.ROUND)`设置为圆点，`drawPoints`绘制多个点，每两个一组
     * `drawOval`绘制椭圆与矩形相同
@@ -112,7 +114,7 @@
     * 使用`clipRect()`可以裁剪出一个矩形让只有绘制在矩形内的才显示
     * 使用`clipPath()`可以裁切出一个自定义图形，在`Path`中使用`setFillType`还可以指定填充方式
 
-    ![图2](/Android/%E8%87%AA%E5%AE%9A%E4%B9%89view/2.jpg)
+    ![图2](%E8%87%AA%E5%AE%9A%E4%B9%89view/2.jpg)
 1. 几何变换
     * `Canvas`
         * `translate(float dx, float dy)`平移
@@ -129,7 +131,7 @@
             * `CENTER`居中
             * `END`右下对齐
 
-            ![图3](/Android/%E8%87%AA%E5%AE%9A%E4%B9%89view/3.png)
+            ![图3](%E8%87%AA%E5%AE%9A%E4%B9%89view/3.png)
         * `setPolyToPoly`针对四角的变换，最多4个点（每个点一个X坐标一个Y坐标）
             * 变换一个点表示平移
             * 变换两个点表示旋转
@@ -139,7 +141,7 @@
         * 注意使用`Matrix`时建议使用`canvas.concat(matrix);`，在不同系统中`canvas.setMatrix(matrix);`显示的结果可能不同
     * `Camera`三维变换有XYZ三个坐标系，以左上角为原点，`X轴`右正左负，`Y轴`上正下负，`Z轴`内正外负，下图为`Camera`的旋转方向
 
-        ![图4](/Android/%E8%87%AA%E5%AE%9A%E4%B9%89view/4.png)
+        ![图4](%E8%87%AA%E5%AE%9A%E4%B9%89view/4.png)
         * `applyToCanvas(canvas)`将变换应用到Canvas
         * `rotate*()`可以针对三个坐标系进行旋转
         * 建议使用`Canvas`的`translate`来移动原点
@@ -147,4 +149,4 @@
         
 自定义view硬件限制
 
-![图5](/Android/%E8%87%AA%E5%AE%9A%E4%B9%89view/5.jpg)
+![图5](%E8%87%AA%E5%AE%9A%E4%B9%89view/5.jpg)

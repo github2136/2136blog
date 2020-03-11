@@ -411,7 +411,7 @@ override fun onBindViewHolder(holder: BindingHolder, position: Int) {
 
 ```
 ### 自定义逻辑
-有时需要自定义一些属性值得操作
+有时需要自定义一些属性值的操作，操作方法必须为静态方法
 ```kotlin
 @BindingAdapter("android:paddingLeft")
 fun setPaddingLeft(view: View, padding: Int) {
@@ -434,11 +434,11 @@ fun loadImage(view: ImageView, url: String, error: Drawable) {
 ### 对象转换
 默认情况下DataBinding会将object转换为所选方法对应的数据类型  
 ### 自定义转换
-```xml
+```kotlin
 @BindingConversion
 fun convertColorToDrawable(color: Int) = ColorDrawable(color)
 ```
-```kotlin
+```xml
 <View
    android:background="@{isError ? @drawable/error : @color/white}"
    android:layout_width="wrap_content"

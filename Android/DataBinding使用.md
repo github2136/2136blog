@@ -376,6 +376,26 @@ val listItemBinding = DataBindingUtil.inflate(layoutInflater, R.layout.list_item
 ```
 如果使用DataBinding时不能直接使用`ViewStubs`需要使用`ViewStubProxy`  
 当变量改变是但有需要立即绑定则可以使用`executePendingBindings()`
+
+可以在引用`ViewStub`地方使用
+```xml
+<ViewStub
+    android:id="@+id/vs1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout="@layout/view_stub_base_data_1"
+    bind:basedata="@{view.baseData}" />
+```
+来自动设置值，`basedata`是`view_stub_base_data_1`布局中使用到的变量，或者在调用`inflate()`方法之前设置`setOnInflateListener`监听然后手动设置值
+```kotlin
+vs1.setOnInflateListener { _, inflated ->
+    val bind: ViewStubBaseData1Binding? = DataBindingUtil.bind(inflated)
+    bind?.basedata = baseData
+}
+vs1.inflate()
+```
+
+
 ## 高级绑定
 ### 动态绑定
 ```kotlin

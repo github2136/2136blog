@@ -1,6 +1,6 @@
 spring-boot配置Mavne远程地址
 ===
-默认idea的maven为http://repo.maven.apache.org ，可以打开idea目录下的`plugins\maven\lib\maven3\confsettings.xml`文件，找到`<mirrors>`节点添加
+默认idea的maven为http://repo.maven.apache.org ，可以打开idea目录下的`plugins\maven\lib\maven3\conf\settings.xml`文件，找到`<mirrors>`节点添加
 ```xml
     <mirror>
       <id>alimaven</id>

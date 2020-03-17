@@ -178,7 +178,8 @@ android:text="@{@string/nameFormat(firstName, lastName)}"
 |ZoomControls   |setOnZoomInClickListener(View.OnClickListener) |android:onZoomIn|
 |ZoomControls   |setOnZoomOutClickListener(View.OnClickListener)|android:onZoomOut|
 
-DataBinding可以从布局中添加事件处理（例如androidd:onClick），事件添加有两种方式
+DataBinding可以从布局中添加事件处理（例如androidd:onClick），布局中事件特性名称由监听器方法的名称确定，例如`OnClickListener`接口里面的定义的方法为`void onClick(View v);`所以事件名称为`androidd:onClick`，事件添加有两种方式
+
 * 方法引用：引用方法需要定义一个方法，必须与对应的事件声明完全一致（包括入参、返回），方法引用在数据绑定的时候就已经添加
 ```kotlin
 class MyHandlers {

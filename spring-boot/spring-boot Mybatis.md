@@ -55,6 +55,53 @@ public interface UserInfoMapper {
 * 能用`#`就不用`$`，`$`主要用于order by
 
 使用`@Autowired(required = false)`来添加Mapper，如果不添加`required = false`会提示`Could not Autowired`，不影响运行但会有警告提示
+
+## XML版
+***
+* 添加实体类
+* 添加Mapper
+  ```java
+  @Mapper
+  @Repository
+  public interface UserMapper {
+      List<User> queryUserList();
+      User queryUserById(int id);
+      int addUser(User user);
+      int updateUser(User user);
+      int deleteUser(int id);
+  }
+  ```
+* 在`resources`目录下添加mapper的xml
+  ```xml
+  <?xml version="1.0" encoding="UTF-8" ?>
+  <!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.example.mapper.UserMapper">
+      <select id="queryUserList" resultType="User">
+          select * from user
+      </select>
+      <select id="queryUserById" resultType="User">
+          select * from user
+      </select>
+      <insert id="addUser" parameterType="User">
+          insert  into user(name,pwd) values (#{name},#{pwd})
+      </insert>
+      <update id="updateUser" parameterType="User">
+          update user set name=#{name} ,pwd =#{pwd} where id= #{id}
+      </update>
+      <delete id="deleteUser" parameterType="int">
+          delete from user where id= #{id}
+      </delete>
+  </mapper>
+  ```
+* yaml中添加配置
+  ```yaml
+  mybatis:
+    mapper-locations: classpath:mybatis/mapper/*.xml
+    type-aliases-package: com.example.pojo
+  ```
+  
 ## 极简XML版
 ***
 配置文件额外添加
@@ -64,6 +111,7 @@ mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
 ```
 **`classpath`是指`src/main/resources`目录**
+
 ## mybatis-config.xml
 ***
 https://mybatis.org/mybatis-3/zh/configuration.html

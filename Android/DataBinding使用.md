@@ -178,7 +178,7 @@ android:text="@{@string/nameFormat(firstName, lastName)}"
 |ZoomControls   |setOnZoomInClickListener(View.OnClickListener) |android:onZoomIn|
 |ZoomControls   |setOnZoomOutClickListener(View.OnClickListener)|android:onZoomOut|
 
-DataBinding可以从布局中添加事件处理（例如androidd:onClick），布局中事件特性名称由监听器方法的名称确定，例如`OnClickListener`接口里面的定义的方法为`void onClick(View v);`所以事件名称为`androidd:onClick`，事件添加有两种方式
+DataBinding可以从布局中添加事件处理（例如androidd:onClick），布局中事件名称由设置监听器方法确定，例如`androidx.swiperefreshlayout.widget.SwipeRefreshLayout`下拉刷新类中设置刷新监听器为`setOnRefreshListener`所以事件名为`android:onRefreshListener`，在`databinding-adapter`中由许多已经添加好的`BindingAdapter`，例如：针对`TextWatcher`的设置。如果监听器里面有两个或以上方法则必须使用自定义`BindingAdapte`，事件添加有两种方式
 
 * 方法引用：引用方法需要定义一个方法，必须与对应的事件声明完全一致（包括入参、返回），方法引用在数据绑定的时候就已经添加
 ```kotlin
@@ -422,14 +422,13 @@ override fun onBindViewHolder(holder: BindingHolder, position: Int) {
 </data>
 ```
 ## 设置属性值
-一般情况下都是使用`setXXX`设置变量值，但如果方法名不是`setXXX`则需要注解来设置
+一般情况下都是使用`setXXX`设置变量值，但如果方法名不是`setXXX`则需要注解来设置，在自定义`BindingAdapter`类上添加
 ```kotlin
 @BindingMethods(value = [
     BindingMethod(
         type = android.widget.ImageView::class,
         attribute = "android:tint",
         method = "setImageTintList")])
-
 ```
 ### 自定义逻辑
 有时需要自定义一些属性值的操作，操作方法必须为静态方法

@@ -1,13 +1,66 @@
 JPA
 ===
 **jpa是一种规范不是产品**，注意使用不同的表结构引擎，默认的`MyISAM`不支持事务、外键，`InnoDB`支持事务、外键
+
+添加JPA`implementation 'org.springframework.boot:spring-boot-starter-data-jpa'`  
+
 ```yaml
 spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect #切换表引擎
+    hibernate:
+      ddl-auto: update
+    show-sql: true # 只有语句没有参数
+```
+
+ddl-auto：用于创建更新验证数据库表结构，一共有4个值
+
+* create： 每次加载 hibernate 时都会删除上一次的生成的表，然后根据你的 model 类再重新来生成新表，哪怕两次没有任何改变也要这样执行，这就是导致数据库表数据丢失的一个重要原因。
+* create-drop ：每次加载 hibernate 时根据 model 类生成表，但是 sessionFactory 一关闭,表就自动删除。
+* update：最常用的属性，第一次加载 hibernate 时根据 model 类会自动建立起表的结构（前提是先建立好数据库），以后加载 hibernate 时根据 model 类自动更新表结构，即使表结构改变了但表中的行仍然存在不会删除以前的行。要注意的是当部署到服务器后，表结构是不会被马上建立起来的，是要等 应用第一次运行起来后才会。
+* validate ：每次加载 hibernate 时，验证创建数据库表结构，只会和数据库中的表进行比较，不会创建新表，但是会插入新值。
+
+## 添加实体类和Dao
+
+***
+
+实体类
+
+```java
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
+public class User {
+    @Id//主键
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//增长方式，id自增长
+    private Long id;
+    @Column(nullable = false)//注解可为空，nullable=false表示不可为空
+    private String name;
+    @Column(nullable = false)
+    private Date createDate;
+    private String tttt;
+    @Transient//忽略字段，将不会自动创建数据库字段
+    private String tttt2;
+}
+```
+
+Dao
+
+```java
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserDao extends JpaRepository<User, Long> {
+    User findByName(String name);
+}
 ```
 
 基本查询分为两种，一种是Spring Data默认实现了的，一种是根据查询方法自动解析SQL
+
 * 默认实现方法
     * 首先使用`interface`继承`JpaRepository`，`public interface UserDao extends JpaRepository<User, Long> {}`
     * 使用默认方法
@@ -194,7 +247,7 @@ public List<UserModel> findByUuidOrAge(@Param("nn") String name);
             }
             // getter setter
         }
-       ``` 
+       ```
     2. 接口
        ```java
        public interface ViewInfo2 {
@@ -210,7 +263,7 @@ public List<UserModel> findByUuidOrAge(@Param("nn") String name);
           ```java
           @Query(value = "SELECT new com.demo.springgradleproject.entity.ViewInfo(u, a) FROM UserInfo u, Address a WHERE u.addressId = a.addressId")
           List<ViewInfo> findViewInfo();
-          ``` 
+          ```
        2. 接口
           ```java
           @Query(value = "SELECT u as UserInfo,a as Address FROM UserInfo u, Address a WHERE u.addressId = a.addressId")

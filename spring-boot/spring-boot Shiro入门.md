@@ -214,6 +214,8 @@ Shiro 内置的 FilterChain
 * anon:所有 url 都都可以匿名访问
 * authc: 需要认证才能进行访问
 * user:配置记住我或认证通过可以访问
+* perms:拥有对某个资源的权限才可以访问
+* role:拥有某个角色
 
 ```java
 public class MyShiroRealm extends AuthorizingRealm {

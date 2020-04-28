@@ -35,31 +35,53 @@ $ git init
 Initialized empty Git repository in C:/Users/Administrator/testProject/.git/
 ```
 
-### 添加文件到 ###
+### 帮助
 ***
-第一步，使用`$ git add`命令将文件暂存到仓库
+
+使用`git --help`查看所有命令，使用`git <command> -h`查看某命令可以添加的参数及说明
+
+### 添加文件 ###
+
+***
+使用`$ git add`命令将文件暂存到仓库
 ```
 $ git add readme.txt
 ```
-当执行该命名没有任何显示则表示添加成功
-第二步，使用命令`$ git commit`将文件提交到仓库
+当执行该命名没有任何显示则表示添加成功，如果添加后可以使用`git restore --staged <file>...`还原到`add`之前的状态，如果使用继续使用`git restore <file>...`则修改的内容将被还原
+
+### 提交文件
+***
+
+使用命令`$ git commit`将文件提交到仓库
+
 ```
 $ git commit -m "wrote a readme file"
 [master (root-commit) cfe8782] wrote a readme file
  1 file changed, 1 insertion(+)
  create mode 100644 readme.txt
 ```
+
 命令中的`-m`后面添加的是提交说明
 `$ git commit`命令执行成功后告诉我，一个文件修改，插入了1行内容
 提交文件时可以同时提交多个文件
+
 ```
 $ git add file1.txt
 $ git add file2.txt file3.txt
 $ git commit -m 'add 3 files'
 ```
+
 如果提交时忘了加上`-m "msg"`，则会显示  
 ![git](img/git1.png)  
 此时按下`inster`在最上方输入提交说明然后，按`Esc`在最下方输入`:wq`保存并提交
+
+`commit`提交后想还原的话可以使用`git reset --soft HEAD^ <file...>`还原，`reset`有几种参数`--mixed`：不删除工作控件代码，撤销`commit`，撤销`add`；`--soft`：不删除工作控件代码，撤销`commit`；`--hear`：删除工作空间代码，撤销`commit`，撤销`add`
+
+` git restore -s HEAD^ <file...>`还原到上一个版本修改的内容将不会保留，`HEAD`使用查看后面的代码
+
+使用`git commit -a -m <message>`可以跳过`add`命令直接提交代码
+
+如果使用`commit`后发现还有文件没提交并且不想分成两个提交记录则可以使用`commit --amend`来修改上次一的提交记录
 
 ### 查看状态
 ***
@@ -98,9 +120,12 @@ index 74b316d..b410c2f 100644
 ```
 `-`后面为删除的内容，`+`后面为添加的内容  
 每次修改后都要先`add`然后`commit`，当使用`status`查看状态提示`nothing to commit, working tree clean`则表示本地以及提交完成了
-### 版本退回
+
+### 日志查看
 ***
+
 当使用`commit`命令提交过多次后可以使用`log`命令查看提交记录
+
 ```
 $ git log
 commit 75e662b773d11355a68c7d387fb1f34522904a7b (HEAD -> master)
@@ -137,12 +162,17 @@ $ git log --pretty=oneline
 00015d666d6c74e66d4ff5316c7f1c4e4462badc com
 9bfc280b8886d763580caf3bd3c35a01aa5763db commit file
 ```
-`HEAD`表示为当前版本，`HEAD^`表示上一个版本，`HEAD^^`表示上上一个，每一个`^`表示向上跳一个版本，如果向上跳的版本太多可以使用`HEAD~数字`，`HEAD~100`表示向上跳100个版本
-```
-$ git reset --hard HEAD^
-HEAD is now at 1586295 c
-```
-当再次查看时提交日志时会发现新提交的版本查不到了，只要命令行窗口没关，可以在使用
+### 版本退回
+
+***
+
+如果文件以及添加到暂存区但没有提交到工作空间，可以使用使用`git reset <file> HEAD`还原到修改前的状态，且保留文件修改，如果不想保留文件的修改项变成和工作空间一样的内容可以再次使用`git checkout -- <file>...`将文件内容还原，使用`git reset --hard <file> HEAD`等于同时执行了`checkout`命令
+
+
+**`HEAD`表示为当前版本，`HEAD^`表示上一个版本，`HEAD^^`表示上上一个，每一个`^`表示向上跳一个版本，如果向上跳的版本太多可以使用`HEAD~数字`，`HEAD~100`表示向上跳100个版本，或者使用指定版本号来指定版本**
+
+在使用`reset`后会发现指定版本以后的提交都不见了，只要命令行窗口没关，可以在使用
+
 ```
 $ git reset --hard 75e662
 HEAD is now at 75e662b 1
@@ -159,7 +189,12 @@ $ git reflog
 00015d6 HEAD@{4}: commit: com
 9bfc280 HEAD@{5}: commit (initial): commit file
 ```
+但是在`git push`时会提示本地分支落后于远程分支，这时需要使用`git push -f`强制推送
+
+但是只是某个提交出问题不是则可以使用`git revert [<options>] <commit-ish>...`，将某次提交反转操作
+
 ### 工作区暂存区
+
 ***
 git和其他版本控制系统有个不同的地方就是，有`暂存区`，在电脑里能看见的文件都在`工作区`，当使用`add`命令后文件的修改就到`暂存区`了，当使用`commit`命令时就将修改提交到本地当前分支
 ### 撤销修改
@@ -191,7 +226,8 @@ rm test.txt
 $ git rm test.txt
 rm 'test.txt'
 ```
-如果文件误删，可以使用`$ git checkout -- test.txt`来还原
+如果文件误删，可以使用`$ git checkout -- test.txt`来还原  
+如果忘了在`.gitignore`添加忽略文件可以先修改`.gitignore`，再使用`git rm --cached <file>`来从库里面删除文件而保留本地文件，或者使用`git rm --cached *`把所有文件缓存删除重新判断是否需要提交
 
 ## 远程库
 ***
@@ -210,167 +246,6 @@ rm 'test.txt'
 ### 远程库克隆
 ***
 选择`Clone or Download`->`Clone with SSH`复制内容->跳转至需要下载项目的目录，执行`$ git clone git@github.com:github2136/gitDemo.git`->`cd gitDemo`
-## 分支管理
-***
-https://blog.csdn.net/ShuSheng0007/article/details/80791849
-
-### 创建分支
-***
-```
-$ git checkout -b dev
-Switched to a new branch 'dev'
-```
-命令上加上`-b`表示创建并切换，等于以下两条命令
-```
-$ git branch dev
-$ git checkout dev
-Switched to branch 'dev'
-```
-可以使用`$ git branch`查看所有分支
-```
-$ git branch
-* dev
-master
-```
-前面`*`表示是当前分支  
-### 合并分支
-***
-当在`dev`做完修改并提交(`commit`)后切换到`master`会发现提交的内容看不到，这时就需要将`dev`内容合并到`master`上
-```
-$ git merge dev
-Updating ef18a71..7a034fc
-Fast-forward
-dev file.txt | 1 +
-1 file changed, 1 insertion(+)
-create mode 100644 dev file.txt
-```
-当合并时提示`Fast-forward`则表示这次是快进模式，是直接把`master`指向`dev`，合并速度非常快，但不是每次都能是`Fast-forward`。当合并完成后就可删除`dev`分支了
-```
-$ git branch -d dev
-Deleted branch dev (was 7a034fc).
-```
-在`git 2.23`版本及之后的版本可以使用`switch`来切换分支
-```
-$ git switch -c dev
-```
-切换到已有的分支
-```
-$ git switch master
-```
-* 查看分支：`git branch`
-* 创建分支：`git branch <name>`
-* 切换分支：`git checkout <name>`或者`git switch <name>`
-* 创建+切换分支：`git checkout -b <name>`或者`git switch -c <name>`
-* 合并某分支到当前分支：`git merge <name>`
-* 删除分支：`git branch -d <name>`
-
-如果在合并分支时出现`E325`错误，这个错误和`git`无关是`vim`的问题，`vim`编辑文件时会生成`MERGE_MSG.swp`文件，当正常关闭时这个文件会被删除，非正常关闭时这个文件不会被删除，当提示`E325`时，此时可以执行
-```
-git merge -abort  // 会删除 merge_* 文件
-rm .git/.MERGE_MSG.sw* // 会删除 .MERGE_MSG.sw* 文件
-```
-接着可以重新合并分支了。如果只有`MERGE_MSG`可以不用执行`git merge -abort`直接删除`MERGE_MSG`即可
-### 解决冲突
-***
-当不同分支合并出现冲突时是不能快速合并，在执行`git merge`命令后文件内会出现`<<<<<<<`、`=======`、`>>>>>>>`，用来表示不同分支的内容
-```
-xxxxx
-<<<<<<< HEAD
-master
-=======
-feature1
->>>>>>> feature1
-```
-当处理完冲突时可以再次提交
-```
-$ git add 'dev file.txt'
-
-$ git commit -m 'merge commit'
-[master 7faec70] merge commit
-```
-还可以使用`$ git log --graph --pretty=oneline  --abbrev-commit`查看分支合并情况
-### 分支管理策略
-***
-默认合并时如果可以git会使用`Fast forward`模式，但这种模式下删除分支后悔丢掉分支信息。如果强制禁用`Fast forward`，git在合并时会生成一个新的`commit`这样就能在分支历史上看到分支信息  
-禁用`Fast forward`
-```
-$ git merge --no-ff -m 'merge with no-ff' dev
-Merge made by the 'recursive' strategy.
- dev file.txt | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-```
-**在实际开发中，我们应该按照几个基本原则进行分支管理：**
-* 首先，master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能在上面干活；
-* 那在哪干活呢？干活都在dev分支上，也就是说，dev分支是不稳定的，到某个时候，比如1.0版本发布时，再把dev分支合并到master上，在master分支发布1.0版本；
-* 你和你的小伙伴们每个人都在dev分支上干活，每个人都有自己的分支，时不时地往dev分支上合并就可以了。
-### Bug分支
-***
-当新开发的内容做到一半的时候出现bug，需要立即修复，可以使用`$ git stash`将当前内容贮藏起来，然后切换到需要修复分支`$ git switch master`，开一个修复bug专用分支`$ git switch -c issue-001`，修复完成后回到主分支`$ git switch master`合并到需要的分支`$ git merge --no-ff  -m 'bug fix' issue-001`，然后删除修复分支`$ git branch -d issue-001`。
-
-然后回到开发分支`$ git switch dev`，把之前放起来的恢复，先使用`$ git stash list`查看贮藏的内容，贮藏还原有两种方法
-* 使用`git stash apply`恢复，但是恢复后，stash内容并不删除，如要要删除还需要使用`git stash drop`
-* 使用`git stash pop`恢复并删除
-
-如果有多个贮藏可以使用`$ git stash apply stash@{0}`来指定恢复的贮藏
-
-假如在`master`分支修复了一个bug，大概率说明在`dev`上也有，此时可以使用`cherry-pick`命令将修改复制到当前分支，**注意输入的commit id是bug修复提交时的ID不是`master`的commit id**
-
-### Feature分支
-***
-当有一个探索性功能时从`dev`拉出一个`feature-name`分支，当开发完成合并到`dev`分支，然后删除。但是如果这个分支不需要了执行`$ git branch -d feature-name`是无法删除的，会提示该分支未合并，此时需要`$ git branch -D feature-name`强制销毁，如果使用`-D`删除那么在git上是完全看不到相关提交记录
-
-### 多人协作
-***
-使用`git remote`查看远程仓库名称
-```
-$ git remote
-origin
-```
-`git remote -v`可以查看详情信息
-```
-$ git remote -v
-origin  git@github.com:github2136/gitDemo.git (fetch)
-origin  git@github.com:github2136/gitDemo.git (push)
-```
-`push`是推送权限，`fetch`是抓取权限，这个可以给账号设置只读权限  
-
-* 推送分支
-  推送分支就是把该分支上所有提交推送到远程库。推送时要指定分支`$ git push origin master`或`$ git push origin dev`。但不是所有分支都要推送到远程库
-  * `master`分支是主分支，因此要时刻与远程同步；
-  * `dev`分支是开发分支，团队所有成员都需要在上面工作，所以也需要与远程同步；
-  * `bug`分支只用于在本地修复bug，就没必要推到远程了，除非老板要看看你每周到底修复了几个bug；
-  * `feature`分支是否推到远程，取决于你是否和你的小伙伴合作在上面开发。
-* 抓取分支
-  多人协作时，大家会在`master`和`dev`分支上推送各自修改，但一般`clone`时只会看到`master`分支，如果其他人要在`dev`分支上开发就必须先获取`dev`分支到本地`$ git checkout -b dev origin/dev`
-
-当向远程推送分支时如果已经有其他人改过代码则会提示
-```
-$ git push origin dev
-To github.com:michaelliao/learngit.git
- ! [rejected]        dev -> dev (non-fast-forward)
-error: failed to push some refs to 'git@github.com:michaelliao/learngit.git'
-hint: Updates were rejected because the tip of your current branch is behind
-hint: its remote counterpart. Integrate the remote changes (e.g.
-hint: 'git pull ...') before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-```
-按这个提示从新`git pull`拉取代码合并并处理冲突后就可以重新推送代码，如果在`git pull`时提示
-```
-$ git pull
-There is no tracking information for the current branch.
-Please specify which branch you want to merge with.
-See git-pull(1) for details.
-
-    git pull <remote> <branch>
-
-If you wish to set tracking information for this branch you can do so with:
-
-    git branch --set-upstream-to=origin/<branch> dev
-```
-则需要执行`$ git branch --set-upstream-to=origin/dev dev`
-### Rebase
-***
-当项目别人先提交到远程后，自己提交(`push`)时会提示拒绝，必须先拉取(`pull`)，合并再提交(`push`)，这时查看日志(`log`)时会发现日志历史岔开了，如果不想有这种情况，拉取合并完成后直接使用变基(`rebase`)提交这样看到的提交日志就是一条线了
 ## 标签管理
 ***
 在发布新版本时通常会在版本库中打上一个标签(tag)，这样查询某个发布版时更加容易
@@ -379,9 +254,10 @@ If you wish to set tracking information for this branch you can do so with:
 首先切换到需要打标签的分支，然后使用`$ git tag v1.0`，打上标签。`$ git tag`查看所有标签  
 默认标签是打在最新的`commit id`上，如果要打在指定`commit id`上可以使用`$ git tag v0.9 f52c633`，标签是按字符排序而不是添加时间排序  
 如果要给标签添加说明可以使用`$ git tag -a v0.1 -m "version 0.1 released" 1094adb`，如果要查看标签详情可以使用`git show <tagname>`
+
 ### 操作标签
 ***
-删除标签使用`$ git tag -d v0.1`，标签默认只在本地，如果要推送到远程使用`git push origin <tagname>`或推送所有标签`$ git push origin --tags`。如果要删除远程标签需要先删除本地标签然后再删除远程标签`git push origin :refs/tags/<tagname>`
+删除标签使用`$ git tag -d v0.1`，标签默认只在本地，如果要推送到远程使用`git push origin <tagname>`或推送所有标签`$ git push origin --tags`。如果要删除远程标签需要先删除本地标签然后再删除远程标签`git push origin :refs/tags/<tagname>`，或者使用`git push origin --delete <tagname>`删除指定标签
 ## 自定义git
 ***
 ### 关联不同的库

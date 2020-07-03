@@ -131,7 +131,7 @@ Merge made by the 'recursive' strategy.
 
 ***
 
-当新开发的内容做到一半的时候出现bug，需要立即修复，可以使用`$ git stash`将当前内容贮藏起来，然后切换到需要修复分支`$ git switch master`，开一个修复bug专用分支`$ git switch -c issue-001`，修复完成后回到主分支`$ git switch master`合并到需要的分支`$ git merge --no-ff  -m 'bug fix' issue-001`，然后删除修复分支`$ git branch -d issue-001`。
+当新开发的内容做到一半的时候出现bug，需要立即修复，可以使用`$ git stash`将当前内容贮藏起来，然后切换到需要修复分支`$ git switch master`，开一个修复bug专用分支`$ git switch -c issue-001`，修复完成后回到主分支`$ git switch master`合并到需要的分支`$ git merge --no-ff -m 'bug fix' issue-001`，然后删除修复分支`$ git branch -d issue-001`。
 
 然后回到开发分支`$ git switch dev`，把之前放起来的恢复，先使用`$ git stash list`查看贮藏的内容，贮藏还原有两种方法
 

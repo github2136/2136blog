@@ -362,7 +362,10 @@ class DataBindingEntity : BaseObservable() {
         }
 }
 ```
+如果想使用`LiveData`实时刷新展示数据则默认只能使用基本数据类型，不能使用对象，如果要使用对象必须使用上面的方法才会在界面上实时刷新数据
+
 ## 生成绑定类
+
 绑定类有几种方法
 * DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 * MyLayoutBinding.inflate(layoutInflater)

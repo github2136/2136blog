@@ -342,12 +342,12 @@ private static class User extends BaseObservable {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
         //notifyChange();刷新所有值
-        notifyPropertyChanged(BR.firstName);
+        notifyPropertyChanged(androidx.databinding.library.baseAdapters.BR.firstName);
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-        notifyPropertyChanged(BR.lastName);
+        notifyPropertyChanged(androidx.databinding.library.baseAdapters.BR.lastName);
     }
 }
 ```
@@ -358,11 +358,11 @@ class DataBindingEntity : BaseObservable() {
     var test: Int = 0
         set(value) {
             field = value
-            notifyPropertyChanged(BR.test)
+            notifyPropertyChanged(androidx.databinding.library.baseAdapters.BR.test)
         }
 }
 ```
-如果想使用`LiveData`实时刷新展示数据则默认只能使用基本数据类型，不能使用对象，如果要使用对象必须使用上面的方法才会在界面上实时刷新数据，如果在kotlin中使用`BR`可能会出现文件及变量生成了但调用时提示`Unresolved reference:xxxx`可以忽略这个红色报错直接运行
+如果想使用`LiveData`实时刷新展示数据则默认只能使用基本数据类型，不能使用对象，如果要使用对象必须使用上面的方法才会在界面上实时刷新数据
 
 ## 生成绑定类
 
@@ -405,7 +405,7 @@ vs1.inflate()
 ```kotlin
 override fun onBindViewHolder(holder: BindingHolder, position: Int) {
     item: T = items.get(position)
-    holder.binding.setVariable(BR.item, item);
+    holder.binding.setVariable(androidx.databinding.library.baseAdapters.BR.item, item);
     holder.binding.executePendingBindings();
 }
 ```

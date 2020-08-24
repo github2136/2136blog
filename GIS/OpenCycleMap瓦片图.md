@@ -3,7 +3,7 @@ OpenCycleMap瓦片图
 
 坐标系为`wgs84` https://www.thunderforest.com
 
-瓦片图地址：https://tile.thunderforest.com/cycle/15/26932/13656.png，所有瓦片图均为256X256的png图片，最低缩放级别为0，瓦片图编号为`{z}/{x}/{y}`，`z`是缩放级别，`x`是从左向右编号，`y`是从右向左编号，缩放等级`0-22`
+瓦片图地址：https://tile.thunderforest.com/cycle/15/26932/13656.png，所有瓦片图均为256X256的png图片，最低缩放级别为0，瓦片图编号为`{z}/{x}/{y}`，`z`是缩放级别，`x`是从左向右编号，`y`是从右向左编号，缩放等级`0-22`，地图使用`WGS-84`坐标系
 
 ```
 https://{s}.tile.thunderforest.com/{style}/{z}/{x}/{y}{scale}.{format}?apikey={apikey}

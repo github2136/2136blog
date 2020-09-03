@@ -1,7 +1,7 @@
 Coroutines协程
 ===
 
-https://developer.android.google.cn/topic/libraries/architecture/coroutines?hl=zh_cn#livedata
+https://developer.android.google.cn/topic/libraries/architecture/coroutines?hl=zh_cn
 
 在Android是用协程需要添加`implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.0'`，然后添加合适的KTX
 

@@ -93,7 +93,7 @@ Flow started
 
 ## 流取消
 
-流采用与协程同样的协作取消。像往常一样，流的收集可以在当流在一个可取消的挂起函数（例如 `delay`）中挂起的时候取消。
+流采用与协程同样的协作取消。像往常一样，流的收集可以在当流在一个可取消的挂起函数（例如 `delay`）中挂起的时候取消，通过`kotlinx.coroutines.Job`的`cancel`方法可以手动取消流。
 
 ```kotlin
 fun simple(): Flow<Int> = flow { 

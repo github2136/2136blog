@@ -159,7 +159,7 @@ println("main: Now I can quit.")
 
 要使代码可取消方法有两种
 
-* 定期调用`delay`挂起函数来检查是否取消
+* 调用`yield`让出cpu，如果取消则会显示`CancellationException`
 * 使用`isActive`来检查是否已经调用取消方法
 
 ## 取消时释放资源

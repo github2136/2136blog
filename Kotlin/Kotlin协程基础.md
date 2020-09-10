@@ -183,7 +183,7 @@ job.cancelAndJoin() // 取消该作业并且等待它结束
 println("main: Now I can quit.")
 ```
 
-如果要运行不可取消代码块可以使用`NonCancellable`
+任何在`finally`中尝试调用挂起函数都将会抛出` CancellationException`，如果要运行不可取消代码块可以使用`NonCancellable`
 
 ```kotlin
 val job = launch {
@@ -300,7 +300,7 @@ suspend fun concurrentSum(): Int = coroutineScope {
 }
 ```
 
-如果有一个方法异常，该作用域内所有子协程都会被取消
+使用`async`的结构化并发时如果有一个方法异常，该作用域内所有子协程都会被取消
 
 ## 协程上下文与调度器
 
@@ -322,4 +322,111 @@ launch(newSingleThreadContext("MyOwnThread")) { // 将使它获得一个新的�
 ```
 
 `newSingleThreadContext` 为协程的运行启动了一个线程。 一个专用的线程是一种非常昂贵的资源。 在真实的应用程序中两者都必须被释放，当不再需要的时候，使用 `close` 函数，或存储在一个顶层变量中使它在整个应用程序中被重用。
+
+## 共享的可变状态与并发
+
+在协程中执行并发操作时一般来说会出现错误的结果例如
+
+```kotlin
+suspend fun massiveRun(action: suspend () -> Unit) {
+    val n = 100  // 启动的协程数量
+    val k = 1000 // 每个协程重复执行同一动作的次数
+    val time = measureTimeMillis {
+        coroutineScope { // 协程的作用域
+            repeat(n) {
+                launch {
+                    repeat(k) { action() }
+                }
+            }
+        }
+    }
+    println("Completed ${n * k} actions in $time ms")    
+}
+var counter = 0
+
+fun main() = runBlocking {
+    withContext(Dispatchers.Default) {
+        massiveRun {
+            counter++
+        }
+    }
+    println("Counter = $counter")
+}
+```
+
+这段代码大概率不能打印出`Counter = 100000`，处理方法一般为
+
+* 使用`AtomicInteger`之类的线程安全类
+
+  ```kotlin
+  val counter = AtomicInteger()
+  
+  fun main() = runBlocking {
+      withContext(Dispatchers.Default) {
+          massiveRun {
+              counter.incrementAndGet()
+          }
+      }
+      println("Counter = $counter")
+  }
+  ```
+
+* 以细粒度限制线程，对特定共享状态的所有访问都限制在单个线程中。它通常应用于UI线程中
+
+  ```kotlin
+  val counterContext = newSingleThreadContext("CounterContext")
+  var counter = 0
+  
+  fun main() = runBlocking {
+      withContext(Dispatchers.Default) {
+          massiveRun {
+              // 将每次自增限制在单线程上下文中
+              withContext(counterContext) {
+                  counter++
+              }
+          }
+      }
+      println("Counter = $counter")
+  }
+  ```
+
+  这段代码运行十分缓慢，因为每次增量都要切换都要通过`withContext`切换协程
+
+* 以粗粒度限制线程，将所有操作都限制到单线程中
+
+  ```kotlin
+  val counterContext = newSingleThreadContext("CounterContext")
+  var counter = 0
+  
+  fun main() = runBlocking {
+      // 将一切都限制在单线程上下文中
+      withContext(counterContext) {
+          massiveRun {
+              counter++
+          }
+      }
+      println("Counter = $counter")
+  }
+  ```
+
+* 互斥，在协程中不需要使用`synchronized`或`ReentrantLock`，使用`Mutex`互斥锁即可，`Mutex.lock()`将会挂起函数通常的写法是`mutex.lock(); try { …… } finally { mutex.unlock() }`，但是可以使用`withLock`扩展函数替代，下面的代码属于细粒度控制，因此会比较耗时
+
+  ```kotlin
+  val mutex = Mutex()
+  var counter = 0
+  
+  fun main() = runBlocking {
+      withContext(Dispatchers.Default) {
+          massiveRun {
+              // 用锁保护每次自增
+              mutex.withLock {
+                  counter++
+              }
+          }
+      }
+      println("Counter = $counter")
+  }
+  ```
+
+* Actors，
 

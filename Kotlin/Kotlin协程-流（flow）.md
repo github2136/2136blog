@@ -300,7 +300,7 @@ nums.zip(strs) { a, b -> "$a -> $b" } // 组合单个字符串
 
 ### Combine
 
-当流每次发送数据时都需要接收值时可以使用该方法，但并不保证收集的数量等于
+使用`Combine`时`nums`或`strs`流中每次发射值都会打印一行
 
 ```kotlin
 val nums = (1..3).asFlow().onEach { delay(300) } // 发射数字 1..3，间隔 300 毫秒
@@ -321,4 +321,180 @@ nums.combine(strs) { a, b -> "$a -> $b" } // 使用“combine”组合单个字�
 ```
 
 ## 展平流
+
+当在获取流的代码中返回流时就会出现包含流的流`Flow<Flow<String>>`，此时可以使用展平模式将内容展开
+
+```kotlin
+fun requestFlow(i: Int): Flow<String> = flow {
+    emit("$i: First")
+    delay(500) // 等待 500 毫秒
+    emit("$i: Second")
+}
+fun main() = runBlocking<Unit> {
+    val startTime = System.currentTimeMillis() // 记录开始时间
+    (1..3).asFlow()
+            .onEach { delay(100) } // 每 100 毫秒发射一个数字
+            .flatMapConcat { requestFlow(it) }
+            .collect { value -> // 收集并打印
+                println("$value at ${System.currentTimeMillis() - startTime} ms from start")
+            }
+}
+```
+
+```
+1: First at 130 ms from start
+1: Second at 631 ms from start
+2: First at 732 ms from start
+2: Second at 1233 ms from start
+3: First at 1334 ms from start
+3: Second at 1835 ms from start
+```
+
+`flatMapConcat`操作符会等待内部流完成后再收集下一个值
+
+```kotlin
+fun main() = runBlocking<Unit> {
+    val startTime = System.currentTimeMillis() // 记录开始时间
+    (1..3).asFlow().onEach { delay(100) } // 每 100 毫秒发射一个数字
+            .flatMapMerge { requestFlow(it) }
+            .collect { value -> // 收集并打印
+                println("$value at ${System.currentTimeMillis() - startTime} ms from start")
+            }
+}
+```
+
+```
+1: First at 159 ms from start
+2: First at 253 ms from start
+3: First at 355 ms from start
+1: Second at 659 ms from start
+2: Second at 754 ms from start
+3: Second at 858 ms from start
+```
+
+`flatMapMerge`则会尽快收集值
+
+**展平模式里都可以添加参数（concurrency）来限制并发数量默认情况下值等于 DEFAULT_CONCURRENCY**
+
+展平模式同样有`xxxxLatest`方法来取消旧的值，直接获取新值
+
+## 异常
+
+如果使用`try{}catch{}`包裹流则不管是在哪个阶段（收集(collect)，转换(map)等）的异常，流都将停止。
+
+### 异常透明性
+
+流必须对异常透明，即在`flow{}`中不使用`try{}catch{}`捕获异常。`flow`可以使用`catch`操作符来保留异常透明性并且允许封装异常处理`catch`操作符对于捕获的异常有几种处理方法
+
+* 使用`thow`重新抛出异常
+* 使用`emit`将异常当做值发射
+* 忽略异常或打印日志，或使用其他代码处
+
+
+如果异常是在`collect{}`中发生则`catch`并不能捕获异常
+
+### 声明式捕获
+
+可以将`collect`中的代码移动到`onEach`中，这样收集时发生的异常`catch`就能捕获到了，但此时收集就必须使用无参的`collect()`触发
+
+## 流完成
+
+可以使用`try{}finally{}`获取完成，或者使用`onCompletion`操作符，在`onCompletion`中海还可以获取异常，`onCompletion`能观察异常但不负责处理异常，处理异常默认还是在`catch`操作符里处理
+
+所以流程顺序是`flow`->`map/filter`等->`collect`->`onCompletion`->`catch`
+
+## 启动流
+
+如果需要一个`addEventListener`函数可以使用`onEach`操作符来做这件事，`onEach`是一个过渡操作符。如果不调用末端操作符收集`onEach`是无效的
+
+使用`launchIn`替代`collect`可以在单独的协程中启动流的收集，这样就可以立即继续下一步代码
+
+```kotlin
+fun main() = runBlocking<Unit> {
+    events()
+        .onEach { event -> println("Event: $event") }
+        .launchIn(this) // <--- 在单独的协程中执行流
+    println("Done")
+}      
+```
+
+```
+Done
+Event: 1
+Event: 2
+Event: 3
+```
+
+`launchIn`必须指定`coroutneScope`。这样就能在实体取消时，同时取消流，类似于`addEventListener`而不用`RemoveEventListener`
+
+## 流的取消
+
+流对每个发射`emit`的值都会检查，这意味着`flow{}`是可以取消的
+
+```kotlin
+fun foo(): Flow<Int> = flow { 
+    for (i in 1..5) {
+        println("Emitting $i") 
+        emit(i) 
+    }
+}
+
+fun main() = runBlocking<Unit> {
+    foo().collect { value -> 
+        if (value == 3) cancel()  
+        println(value)
+    } 
+}
+```
+
+```
+Emitting 1
+1
+Emitting 2
+2
+Emitting 3
+3
+Emitting 4
+Exception in thread "main" kotlinx.coroutines.JobCancellationException: BlockingCoroutine was cancelled; 
+```
+
+但其他的流操作就不会自动执行例如使用`IntRange.asFlow`
+
+```kotlin
+fun main() = runBlocking<Unit> {
+    (1..5).asFlow().collect { value -> 
+        if (value == 3) cancel()  
+        println(value)
+    } 
+}
+```
+
+```
+1
+2
+3
+4
+5
+Exception in thread "main" kotlinx.coroutines.JobCancellationException: BlockingCoroutine was cancelled; 
+```
+
+这个flow就将所有值都打印出来了
+
+为了避免这个问题可以添加 `.onEach { currentCoroutineContext().ensureActive() }`，也可以使用现成的操作符`cancellable`
+
+```kotlin
+fun main() = runBlocking<Unit> {
+    (1..5).asFlow().cancellable().collect { value -> 
+        if (value == 3) cancel()  
+        println(value)
+    } 
+}
+```
+
+```
+1
+2
+3
+Exception in thread "main" kotlinx.coroutines.JobCancellationException: 
+```
 

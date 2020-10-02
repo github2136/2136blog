@@ -5,22 +5,22 @@
 基本类型
 
 * `LineChart`折线图
-    ![line1](MPAndroidChart\line1.png)
+    ![line1](MPAndroidChart/line1.png)
 * `BarChart`柱状图
-    ![bar1](MPAndroidChart\bar1.png)
-    ![bar2](MPAndroidChart\bar2.png)
+    ![bar1](MPAndroidChart/bar1.png)
+    ![bar2](MPAndroidChart/bar2.png)
 * `ScatterChart`散点图
-    ![scatter](MPAndroidChart\scatter.png)
+    ![scatter](MPAndroidChart/scatter.png)
 * `CandleStickChart`烛台图
-    ![candle_stick](MPAndroidChart\candle_stick.png)
+    ![candle_stick](MPAndroidChart/candle_stick.png)
 * `PieChart`饼图
-    ![pie](MPAndroidChart\pie.png)
+    ![pie](MPAndroidChart/pie.png)
 * `BubbleChart`气泡图
-    ![bubble](MPAndroidChart\bubble.png)
+    ![bubble](MPAndroidChart/bubble.png)
 * `RadarChart`雷达图
-    ![radar](MPAndroidChart\radar.png)
+    ![radar](MPAndroidChart/radar.png)
 * `CombinedChart`组合图
-    ![combined](MPAndroidChart\combined.png)
+    ![combined](MPAndroidChart/combined.png)
 
 ## 基本设置
 

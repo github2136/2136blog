@@ -121,8 +121,8 @@ XAxis为横坐标、YAxis纵坐标
 
 * `IndexAxisValueFormatter`通过下标返回指定值
 * `PercentFormatter`返回带逗号的数字保留一位小数，带%可以在饼图中使用
-* `DefaultValueFormatter`默认格式，返回带逗号的数字保留一位小数
-* `DefaultAxisValueFormatter`默认轴图，返回带逗号的数字保留一位小数
+* `DefaultValueFormatter`默认格式，可以指定保留几位小数，除了可以在构造函数指定保留几位小数，还可以使用`setup`方法指定
+* `DefaultAxisValueFormatter`默认轴图，可以指定保留几位小数
 * `StackedValueFormatter`堆叠条形图
 * `LargeValueFormatter`大数字显示，会按`k`/`m`/`b`/`t`显示
 

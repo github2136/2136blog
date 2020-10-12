@@ -119,12 +119,12 @@ XAxis为横坐标、YAxis纵坐标
 
 ### 默认自定义格式
 
-*     `IndexAxisValueFormatter`通过下标返回指定值
-*     `PercentFormatter`返回带逗号的数字保留一位小数，带%可以在饼图中使用
-*     `DefaultValueFormatter`默认格式，返回带逗号的数字保留一位小数
-*     `DefaultAxisValueFormatter`默认轴图，返回带逗号的数字保留一位小数
-*     `StackedValueFormatter`堆叠条形图
-*     `LargeValueFormatter`大数字显示，会按`k`/`m`/`b`/`t`显示
+* `IndexAxisValueFormatter`通过下标返回指定值
+* `PercentFormatter`返回带逗号的数字保留一位小数，带%可以在饼图中使用
+* `DefaultValueFormatter`默认格式，返回带逗号的数字保留一位小数
+* `DefaultAxisValueFormatter`默认轴图，返回带逗号的数字保留一位小数
+* `StackedValueFormatter`堆叠条形图
+* `LargeValueFormatter`大数字显示，会按`k`/`m`/`b`/`t`显示
 
 ### 图例Legend
 

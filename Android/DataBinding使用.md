@@ -454,7 +454,39 @@ fun loadImage(view: ImageView, url: String, error: Drawable) {
 ```xml
 <ImageView app:imageUrl="@{venue.imageUrl}" app:error="@{@drawable/venueError}" />
 ```
+* 如果监听多个可以使用
+
+  ```kotlin
+  @BindingAdapter(
+          value = ["android:surface_created", "android:surface_changed", "android:surface_destroyed"],
+          requireAll = false
+      )
+  ```
+
+  `requireAll`表示是否所有参数都是必须的
+* 当监听回调不是使用`set`覆盖而是使用`add`添加时可以使用以下方法防止重复添加
+
+  ```kotlin
+  var newValue: Callback? = null
+  if (surfaceCreated != null) {
+      newValue = object : Callback {
+          override fun surfaceCreated(holder: SurfaceHolder?) {
+              surfaceCreated?.surfaceCreated(holder)
+          }
+      }
+  }
+  val oldValue = ListenerUtil.trackListener(surfaceView, newValue, R.id.surfaceHolderCallback)
+  if (oldValue != null) {
+      surfaceView.holder.removeCallback(newValue)
+  }
+  if (newValue != null) {
+      surfaceView.holder.addCallback(newValue)
+  }
+  ```
+
+
 ### 对象转换
+
 默认情况下DataBinding会将object转换为所选方法对应的数据类型  
 ### 自定义转换
 ```kotlin

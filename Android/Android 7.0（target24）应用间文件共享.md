@@ -1,4 +1,4 @@
-# 7.0应用间文件共享
+# Android 7.0（target24）应用间文件共享
 7.0后禁止使用`file://`的URI必须使用`content://`不然会提示`FileUriExposedException`异常  
 文件共享方法
 1.  首先添加`file_paths.xml`到`res/xml`中文件名可自定义
@@ -13,12 +13,12 @@
     `name`uri路径段，用于隐藏真实文件路径`path`共享子目录，该路径为目录路径不可指定为单个文件`<paths>`下面节点分为5种，可以有多个共享目录
     |类型|说明|路径|
     |-|-|-|
-    |files-path|Context.getFilesDir()|/data/user/0/包名/files|
-    |cache-path|getCacheDir()|/data/user/0/包名/cache|
+    |files-path|context.getFilesDir()|/data/user/0/包名/files|
+    |cache-path|context.getCacheDir()|/data/user/0/包名/cache|
     |external-path|Environment.getExternalStorageDirectory()|/storage/emulated/0|
-    |external-files-path|Context#getExternalFilesDir(String)或Context.getExternalFilesDir(null)|/storage/emulated/0/Android/data/包名/files|
-    |external-cache-path|Context.getExternalCacheDir()|/storage/emulated/0/Android/data/包名/cache|
-    |external-media-path|Context.getExternalMediaDirs()该路径只在api21以上才有|/storage/emulated/0/Android/media/包名|
+    |external-files-path|context.getExternalFilesDir(String)或context.getExternalFilesDir(null)|/storage/emulated/0/Android/data/包名/files|
+    |external-cache-path|context.getExternalCacheDir()|/storage/emulated/0/Android/data/包名/cache|
+    |external-media-path|context.getExternalMediaDirs()该路径只在api21以上才有|/storage/emulated/0/Android/media/包名|
 
 1. 添加`provider`到`Manifest`
     ```xml
